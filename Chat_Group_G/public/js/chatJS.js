@@ -6,7 +6,12 @@
           return false;
         });
         socket.on('chat message', function(msg){
-          $('#messages').append($('<li>').text(msg));
+          	var currentdate = new Date(); 
+          	var time = "[" + currentdate.getHours()+ ":"  
+              		+ currentdate.getMinutes() + ":" 
+              		+ currentdate.getSeconds() + "] ";
+            $('#messages').append($('<li>').text(time+name+": "+msg));
           window.scrollTo(0, document.body.scrollHeight);
         });
       });
+    
