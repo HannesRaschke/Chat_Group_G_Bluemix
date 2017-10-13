@@ -21,18 +21,30 @@ app.get('/', function(req, res){
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+////////////////////////////////////////////////////////////////
 io.on('connection', function(socket){
-  socket.on('chat message', function(msg){
-    io.emit('chat message', msg);
-  });
+	
+	console.log('user connected');
+	
+	//on connect send user connected message
+	socket.on('chat message', function(msg){
+		io.emit('chat message', msg);
+	});
+	
+	socket.on('clientEnterEvent', function(data) {
+	    console.log(data);
+	    socket.emit('enter', data);
+	    console.log("sent enter data");
+	});
+
+	//on disconnect send user disconnected message
+	socket.on('disconnect', function(){
+		console.log('user disconnected');
+	});
+	
 });
+//////////////////////////////////////////////////////////////////////
 
 http.listen(port, function(){
   console.log('listening on *:' + port);
-});
-
-app.post('/register',function(req, res){
-	var name = req.body.uName;
-	names.push(name);
-	res.send(('SUCCESS!'));
 });
