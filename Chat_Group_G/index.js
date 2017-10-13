@@ -5,7 +5,7 @@ var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 var path = require('path');
 
-var names = [0];
+var names = [];
 
 var bodyParser = require('body-parser');
 app.use(express.static(__dirname));
@@ -34,7 +34,7 @@ io.on('connection', function(socket){
 	socket.on('clientEnterEvent', function(data) {
 	    console.log(data);
 	    socket.emit('enter', data);
-	    console.log("sent enter data");
+	    console.log('user connected to chat');
 	});
 
 	//on disconnect send user disconnected message
