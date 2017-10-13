@@ -2,6 +2,7 @@
 #messages li { padding: 5px 10px; }
 #messages li:nth-child(odd) { background: #eee; }
 #messages { margin-bottom: 40px }
+#privateMessage { font-style: italic; }
 
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
