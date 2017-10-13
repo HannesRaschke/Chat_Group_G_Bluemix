@@ -5,11 +5,11 @@ var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 var path = require('path');
 
-var names = [0]
+var names = [0];
 
 var bodyParser = require('body-parser');
 app.use(express.static(__dirname));
-app.use(bodyParser.json())
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
 }));
@@ -32,13 +32,7 @@ http.listen(port, function(){
 });
 
 app.post('/register',function(req, res){
-	var name = req.body.uName
-	names.push(name)
-	
+	var name = req.body.uName;
+	names.push(name);
 	res.send(('SUCCESS!'));
-
-})
-
-//app.post('/', function (req, res) {
-//	  res.sendFile(path.join__dirname + '/public/chat.html');
-//	});
+});

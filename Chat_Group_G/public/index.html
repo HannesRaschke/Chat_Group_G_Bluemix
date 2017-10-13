@@ -3,17 +3,19 @@
   <head>
     <title>Socket.IO chat</title>
     <link rel="stylesheet" type="text/css" href='/css/stylesheet.css'>
-  </head>
-  
-  <body>  
-   
-  	<form id="enterUsername" action="">
-      <input id="userNameInp" autocomplete="off" /><button id="userNameBtn" onclick="register()">Enter Chat</button>
-    </form>
-    
     <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script>
     <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
     <script src="/js/loginJS.js"></script>
+  </head>
+  
+<body>  
+   
+	<div class="wrapper">
+		<h1 id=headerIndex>RndmCht</h1>
+  		<form id="enterUsername" action="">
+    	<input id="userNameInp" value="Nickname" autocomplete="off" /><button id="userNameBtn" onclick="register()">Enter Chat</button>
+    	</form>
+	</div>
     
   </body>
 </html>
