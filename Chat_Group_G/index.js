@@ -51,8 +51,8 @@ io.on('connection', function(socket){
 		if(msg.content==="\\list"){
 			message= Object.keys(users);
 		}else{
-			console.log("wrong command from: "+users[msg.id])
-			message="this command does not exist. Try \\list"
+			console.log("wrong command from: "+users[msg.id]);
+			message="this command does not exist. Try \\list";
 		}
 		socket.to(users[msg.id]).emit('chat message',{type:"system", message:message});	
 	});
@@ -67,7 +67,9 @@ io.on('connection', function(socket){
 		console.log(nick);
 		console.log(users);
 	    socket.emit('enter', nick);
-	    console.log('user connected to chat');
+	    //Save nickname on socket
+	    socket.nickname=nick;
+	    console.log(socket.nickname + ' connected to chat');
 		}else{
                 var taken = true;
                 socket.emit('nickTaken', taken);
@@ -80,8 +82,8 @@ io.on('connection', function(socket){
 
 	// on disconnect delete user data and send "user disconnected" message
 	socket.on('disconnect', function(){
-		delete users[socket.id]
-		console.log('user disconnected');
+		delete users[socket.nickname];
+		console.log(socket.nickname + ' disconnected');
 	});
 	
 });
