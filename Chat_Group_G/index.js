@@ -45,6 +45,7 @@ io.on('connection', function(socket){
 		
 	});
 
+	
 	socket.on('command', function(msg){
 		var message;
 		if(msg.content==="\\list"){
@@ -56,13 +57,25 @@ io.on('connection', function(socket){
 		socket.to(users[msg.id]).emit('chat message',{type:"system", message:message});	
 	});
 
-	socket.on('clientEnterEvent', function(data) {
+	
+	socket.on('clientEnterEvent', function(nick) {
+		if (/^\w+$/.test(nick)) {
+		//if nick does not exist yet
+			if(!(nick in users)){
 	    // connects the user to their socket id (acts as a cookie)
-		users[data]=socket.id
-		
-		console.log(data);
-	    socket.emit('enter', data);
+		users[nick]=socket.id;
+		console.log(nick);
+		console.log(users);
+	    socket.emit('enter', nick);
 	    console.log('user connected to chat');
+		}else{
+                var taken = true;
+                socket.emit('nickTaken', taken);
+                }
+        }else{
+            var failure = true;
+            socket.emit('invalidNick', failure);
+        }
 	});
 
 	// on disconnect delete user data and send "user disconnected" message

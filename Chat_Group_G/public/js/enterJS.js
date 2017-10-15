@@ -32,10 +32,10 @@
     	    
     	  //////////////////
       	  //listen on server, entered chat
-    	    socket.on('enter', function(data){
-    	    	
+    	    socket.on('enter', function(nick){
+//    	    		myNick=nick;
     	    		console.log("socket on enter");
-        	    	console.log(data);
+        	    	console.log(nick);
         	    	
         	    	var chat = '<ul id="messages"></ul><form id="chat" action=""><input id="m" autocomplete="off" /><button id="bChat">Send</button></form>'; 
         	            $("body").empty();
@@ -60,4 +60,12 @@
         	      	        });    	            
         	      	  /////////////////////////
     	    });
+    	    
+    	    socket.on('nickTaken', function(data){
+                alert("Username already taken!");
+            })
+            
+             socket.on('invalidNick', function(data){
+                alert("Enter a valid username\nOnly letters and numbers allowed");
+            })
       });
