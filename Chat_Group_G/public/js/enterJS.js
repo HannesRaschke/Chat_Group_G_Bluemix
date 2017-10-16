@@ -1,11 +1,11 @@
       $(function () {
     	  var socket = io();
-    	  var name;
+    	  var nick;
     	  ////////////////// 
     	  //username entered; button pressed
     	  $("#enterUsername").submit(function(){
-    	        name = document.getElementById("userNameInp").value; 
-    	        socket.emit("clientEnterEvent", name);
+    	        nick = document.getElementById("userNameInp").value; 
+    	        socket.emit("clientEnterEvent", nick);
     	        return false;
     	    });
     	    
@@ -14,25 +14,29 @@
         	//listen on server, chat message received
     	    socket.on('chat message', function(msg){
     	    	console.log("message123")
-              	var currentdate = new Date(); 
-              	var time = "[" + (currentdate.getHours<10?'0':'') + currentdate.getHours()+ ":"  
-                  		+ (currentdate.getMinutes()<10?'0':'') + currentdate.getMinutes() + ":" +
-                  		(currentdate.getSeconds()<10?'0':'') + currentdate.getSeconds()  + "] ";
-                if(msg.type==="private"){
-                	$('#messages').append($('<li id="privateMessage">').text(time+msg.from+" whispers: "+msg.message));
-                }else if(msg.type==="system"){
-                	console.log(msg.content)
-                	$('#messages').append($('<li id="systemMessage">').text(time+"SYSTEM: "+msg.content));
-                }else{                	
-                	$('#messages').append($('<li>').text(time+msg.id+": "+msg.content));
-                }
+    	    	console.log(msg);
+                	console.log(msg.id);
+                	$('#messages').append($('<li>').text(msg.timestamp+msg.id+": "+msg.content));
                 window.scrollTo(0, document.body.scrollHeight);
-              
             });
+    	    
+    	    socket.on('private message', function(msg){
+    	    	console.log("pm123")
+    	    	console.log(msg);
+    	    	$('#messages').append($('<li id="privateMessage">').text(msg.timestamp+msg.from+" whispers to " + msg.to+ ": " +msg.message));
+    	    	window.scrollTo(0, document.body.scrollHeight);
+    	    });
+    	    
+    	    socket.on('system message', function(msg){
+    	    	console.log("sys");
+               	$('#messages').append($('<li id="systemMessage">').text(msg.timestamp + "SYSTEM: " +msg.user + msg.action));
+    	    	window.scrollTo(0, document.body.scrollHeight);
+    	    });
     	    
     	  //////////////////
       	  //listen on server, entered chat
     	    socket.on('enter', function(nick){
+    	    	console.log(nick);
 //    	    		myNick=nick;
     	    		console.log("socket on enter");
         	    	console.log(nick);
@@ -44,16 +48,13 @@
         	      	  //////////////////
         	      	  //send chat message; button pressed // eventhandler only after "chat" is created
         	      	    $("#chat").submit(function(){
-        	      	    	//if the message is private
-        	      	    	if($('#m').val().substring(0,4)==="\\msg"){
-        	      	    		 socket.emit('private message',{ id:name,content:$('#m').val()});
         	      	    	//if the message is a command
-        	      	    	}else if($('#m').val().charAt(0)==="\\" ){   
-        	              	  socket.emit('command',{id:name,content:$('#m').val()})
+        	     	    	if($('#m').val().charAt(0)==="\\" ){   
+        	              	  socket.emit('command',{id:nick,content:$('#m').val()})
         	      	    	//normal message
         	      	    	}else{
         	      	    		console.log($('#m').val())
-        	      	    		socket.emit("chat message",{ id:name,content:$("#m").val()});
+        	      	    		socket.emit("chat message",{ id:nick,content:$("#m").val(),timestamp: ""});
         	      	    	}
         	      	          $("#m").val("");
         	      	          return false;
