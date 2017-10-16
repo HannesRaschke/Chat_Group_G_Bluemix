@@ -49,17 +49,19 @@ io.on('connection', function(socket){
 				io.to(users[id]).emit('private message', {from:socket.nickname  , to:receiverName, message:message, timestamp:timestamp()})
 				//sending to sender
 				socket.emit('private message', {from:socket.nickname  , to:receiverName, message:message, timestamp:timestamp()})
-					}
-				}
-		}
-	}
+											}
+									}
+				 }
+			}
 		else if(flag==="\\list"){
-			var message;
-			message= Object.keys(users);
+			var userList = "Following users are online: ";
+			userList += Object.keys(users);
+			socket.emit('command', {timestamp:timestamp(), content:userList})
 		}else{
-			console.log("wrong command from: "+users[msg.id]);
-			message="this command does not exist. Try \\list";
-		}
+			message="This command does not exist. Try \\list , \\pn";
+			socket.emit('command', {timestamp:timestamp(), content:message})
+			
+			}
 	});
 	
 	//on client enter save nickname and send join message to clients

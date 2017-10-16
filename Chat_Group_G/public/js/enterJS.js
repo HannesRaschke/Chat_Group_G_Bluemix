@@ -15,7 +15,7 @@
     	    socket.on('chat message', function(msg){
     	    	console.log("message123")
     	    	console.log(msg);
-                	console.log(msg.id);
+                	
                 	$('#messages').append($('<li>').text(msg.timestamp+msg.id+": "+msg.content));
                 window.scrollTo(0, document.body.scrollHeight);
             });
@@ -32,6 +32,11 @@
                	$('#messages').append($('<li id="systemMessage">').text(msg.timestamp + "SYSTEM: " +msg.user + msg.action));
     	    	window.scrollTo(0, document.body.scrollHeight);
     	    });
+    	    
+    	    socket.on('command',function(msg){
+    	    	$('#messages').append($('<li id="systemMessage">').text(msg.timestamp  +msg.content));
+    	    	window.scrollTo(0, document.body.scrollHeight);
+    	    })
     	    
     	  //////////////////
       	  //listen on server, entered chat
