@@ -105,6 +105,7 @@ io.on('connection', function(socket){
 		io.emit('file message',{timestamp:time,fileName:file.fileName,id:file.id,content:file.content});
 		
 });
+});
 
 // ////////////////////////////////////////////////////////////////////
 
@@ -119,5 +120,4 @@ function timestamp(){
       		(currentdate.getSeconds()<10?'0':'') + currentdate.getSeconds()  + "] ";
   	return time;
 //  	msg.timestamp = timestamp();
-  	
 }
