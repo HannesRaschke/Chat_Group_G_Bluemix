@@ -9,7 +9,6 @@ var fs = require('fs')
 var users={};
 
 var bodyParser = require('body-parser');
-app.use(express.static(__dirname));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
     extended: true
@@ -96,7 +95,7 @@ io.on('connection', function(socket){
 	socket.on('upload',function(file){
 		console.log(file)
 		
-		var stream = fs.createWriteStream("Temp/"+file.fileName)
+		var stream = fs.createWriteStream("public/Temp/"+file.fileName)
 		stream.once('open',function(){
 			stream.write(file.file);
 			stream.end();
