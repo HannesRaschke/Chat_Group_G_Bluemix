@@ -4,6 +4,7 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 var path = require('path');
+var fs = require('fs')
 
 var users={};
 
@@ -91,7 +92,20 @@ io.on('connection', function(socket){
 		delete users[socket.nickname];
 	});
 	
+	//gets a file object and uses an fs stream to write it to a file. Then sends the file as a file message to all users
+	socket.on('upload',function(file){
+		console.log(file)
+		
+		var stream = fs.createWriteStream("Temp/"+file.fileName)
+		stream.once('open',function(){
+			stream.write(file.file);
+			stream.end();
+		})
+		var time =timestamp()
+		io.emit('file message',{timestamp:time,fileName:file.fileName,id:file.id,content:file.content});
+		
 });
+
 // ////////////////////////////////////////////////////////////////////
 
 http.listen(port, function(){
