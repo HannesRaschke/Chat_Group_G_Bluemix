@@ -8,6 +8,7 @@ var fs = require('fs')
 
 var users={};
 
+//app.use(express.static(__dirname+"/public/Temp/*"))
 var bodyParser = require('body-parser');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -19,13 +20,14 @@ app.get('/', function(req, res){
   res.sendFile(__dirname + '/public/index.html');
 });
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'public'))); 
 
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket){
 	
 	//on chatmessage, send to all clients
 	socket.on('chat message', function(msg){
+		console.log(__dirname)
 		msg.timestamp = timestamp();
 		io.emit('chat message', msg);
 	});
@@ -58,7 +60,7 @@ io.on('connection', function(socket){
 			userList += Object.keys(users);
 			socket.emit('command', {timestamp:timestamp(), content:userList})
 		}else{
-			message="This command does not exist. Try \\list , \\pn";
+			message="This command does not exist. Try \\list , \\pm";
 			socket.emit('command', {timestamp:timestamp(), content:message})
 			
 			}
@@ -105,7 +107,27 @@ io.on('connection', function(socket){
 			stream.end();
 		})
 		var time =timestamp()
-		io.emit('file message',{timestamp:time,fileName:file.fileName,id:file.id,content:file.content});
+		if(file.isPrivate){
+			
+			msgElements=file.content.split(" ");
+			var flag=msgElements[0];
+			if(flag==="\\pm"){
+				var receiver=users[msgElements[1]];
+				if(receiver===undefined){
+					io.to(users[file.id]).emit('private message',{});
+				}else{
+					for(var id in users){
+						if(receiver===users[id]){
+					io.to(users[id]).emit('file message',{timestamp:time,fileName:file.fileName,id:file.id,content:file.content});
+					socket.emit('file message',{timestamp:time,fileName:file.fileName,id:file.id,content:file.content});
+						}
+					}
+				}
+						
+			}
+		}else{
+			io.emit('file message',{timestamp:time,fileName:file.fileName,id:file.id,content:file.content});
+		}
 		
 });
 });

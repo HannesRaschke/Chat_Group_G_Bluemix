@@ -44,7 +44,7 @@
     	    
     	    //shows normal message and the uploaded file
     	    socket.on('file message', function(msg){ 
-                	$('#messages').append($('<li id="fileMessage">').text(msg.timestamp+msg.id+": "+msg.content));
+//                	$('#messages').append($('<li id="fileMessage">').text(msg.timestamp+msg.id+": "+msg.content));
                 	$('#messages').append($('<a id="file" href = "Temp/'+msg.fileName+'" download>'+'<img id= "fileImg" src="Media/file.png" alt = "'+msg.fileName+'">'+'</a>')); //onclick="downloadFile('+"'"+msg.fileName+"'"+')"  //
                 window.scrollTo(0, document.body.scrollHeight);
             });
@@ -71,20 +71,22 @@
         	      	  //////////////////
         	      	  //send chat message; button pressed // eventhandler only after "chat" is created
         	      	    $("#chat").submit(function(){
+        	      	    	var isPrivate;
         	      	    	//if the message is a command
         	     	    	if($('#m').val().charAt(0)==="\\" ){   
         	              	  socket.emit('command',{id:nick,content:$('#m').val()})
+        	              	  isPrivate=true
         	      	    	//normal message
         	      	    	}else{
-        	      	    		//console.log($('#m').val())
-        	      	    		if(fileSelected===undefined){
-        	      	    			socket.emit("chat message",{ id:nick,content:$("#m").val(),timestamp: ""});
-        	      	    		}else{
-        	      	    			socket.emit('upload',{file:fileSelected,fileName:fileSelected.name,id:nick,content:$("#m").val()})//type:fileSelected.type
-        	      	    			$('#d').html("");   
-        	      	    			fileSelected=undefined;
-        	      	    		}
+        	      	    		socket.emit("chat message",{ id:nick,content:$("#m").val(),timestamp: ""});
+        	      	    		isPrivate=false
         	      	    	}
+        	     	    	//if a file is send with the message
+        	     	    	if(fileSelected!=undefined){
+        	     	    		socket.emit('upload',{file:fileSelected,fileName:fileSelected.name,id:nick,content:$("#m").val(),isPrivate:isPrivate})//type:fileSelected.type
+    	      	    			$('#d').html("");   
+    	      	    			fileSelected=undefined;
+        	     	    	}
         	      	          $("#m").val("");
         	      	          return false;
         	      	        });    	            
