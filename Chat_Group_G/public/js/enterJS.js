@@ -57,7 +57,12 @@
     	    		console.log("socket on enter");
         	    	console.log(nick);
         	    	
-        	    	var chat = '<ul id="messages"></ul><form id="chat" action=""><input type="file" id="f"><div id="d"></div><input id="m" autocomplete="off" /><button id="bChat">Send</button></form>'; 
+        	    	var smilies = "";
+        	    	for(var i=128512; i <= 128591; i++){
+        	    		smilies += '<span class="smilies" id="&#'+i+'">&#'+i+'</span>';
+        	    	}
+        	    	
+        	    	var chat = '<div id="smilies">'+smilies+'</div><div id="onlineUserWidget"></div><ul id="messages"></ul><form id="chat" action=""><input type="file" id="f"><div id="d"></div><input id="m" autocomplete="off" /><button id="bChat">Send</button></form>'; 
         	            $("body").empty();
         	            $("body").append(chat);
         	            
@@ -84,6 +89,23 @@
         	      	          return false;
         	      	        });    	            
         	      	  /////////////////////////
+        	      	    
+        	     	    
+          	      	  $(function(){
+          	      		  $('.smilies').on("click",function(){
+          	      			  var smilie = $(this).attr('id');
+          	      			  var chatmessage = $('#m').val();
+          	      		  $('#m').val(chatmessage + smilie );
+          	      		  })
+          	      	  })  
+          	      	  
+          	      	  $(function(){
+          	      		  $('#onlineUserWidget').on("click",".onlineUser",function(){
+        	      			  var user = $(this).attr('id');
+        	      			  var chatmessage = $('#m').val();
+        	      			  $('#m').val("\\pm " + user + " " +chatmessage);
+        	      		  })
+        	      	  })  
     	    });
     	    
     	    socket.on('nickTaken', function(data){
@@ -99,6 +121,18 @@
     	    	fileSelected = event.target.files[0]
     	    		$('#d').html("File Selected: "+fileSelected.name);   	
     	    	}
-
+            
+            socket.on('OnlineUserWidget',function(msg){
+    	    	var OUWUsers = "";
+    	    	for(var i=0; i < msg.content.length; i++){
+    	    		OUWUsers += '<span class=onlineUser id='+msg.content[i]+'>'+msg.content[i]+'</span><br>';
+    	    	}
+    	    	
+    	    	console.log("ouw");
+    	    	console.log(msg.content);
+    	    	console.log(OUWUsers);
+    	    	$('#onlineUserWidget').empty();
+    	    	$('#onlineUserWidget').append(OUWUsers);
+    	    })
             
       });

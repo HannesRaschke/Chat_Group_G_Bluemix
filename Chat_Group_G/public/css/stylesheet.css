@@ -28,6 +28,10 @@ body { font: 13px Helvetica, Arial;
     left: 35%;
 }
 
+.smilies{user-select: none;}
+
+span {cursor:pointer}
+
 #userNameInp {
 	style="font-size:2px;
 }

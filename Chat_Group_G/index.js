@@ -75,6 +75,8 @@ io.on('connection', function(socket){
 	    //Save nickname on socket
 	    socket.nickname=nick;
 	    io.emit('system message', {action:" joined", timestamp:timestamp(), user:socket.nickname});
+	    var OnlineUser = Object.keys(users);
+		io.emit('OnlineUserWidget', {content:OnlineUser});
 		}else{
                 var taken = true;
                 socket.emit('nickTaken', taken);
@@ -89,6 +91,8 @@ io.on('connection', function(socket){
 	socket.on('disconnect', function(){
 		io.emit('system message', {action:" left", timestamp:timestamp(), user:socket.nickname});
 		delete users[socket.nickname];
+		var OnlineUser = Object.keys(users);
+		io.emit('OnlineUserWidget', {content:OnlineUser});
 	});
 	
 	//gets a file object and uses an fs stream to write it to a file. Then sends the file as a file message to all users
