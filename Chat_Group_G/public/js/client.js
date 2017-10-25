@@ -1,3 +1,9 @@
+/////////////////////
+//Dennis Funk
+//Hannes Raschke
+//Group G
+//
+
 $(function() {
 	var socket = io();
 	var nick; //the nickname of this user
