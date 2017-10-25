@@ -1,19 +1,19 @@
 $(function() {
 	var socket = io();
-	var nick;
-
-	var fileSelected
-	var fileReader
+	var nick; //the nickname of this user
+	var fileSelected //the file that will be sent with the next message
 	// ////////////////
 	// username entered; button pressed
 	$("#enterUsername").submit(function() {
 		nick = document.getElementById("userNameInp").value;
 		socket.emit("clientEnterEvent", nick);
+		console.log("hi")
 		return false;
 	});
 
 	// ////////////////
 	// listen on server, chat message received
+	//adds a normal chat message to this users chat
 	socket.on('chat message', function(msg) {
 		console.log("message123")
 		console.log(msg);
@@ -22,7 +22,7 @@ $(function() {
 				$('<li>').text(msg.timestamp + msg.id + ": " + msg.content));
 		$('#messages')[0].scrollTo(0, $('#messages')[0].scrollHeight);
 	});
-
+	//adds a message in form of a private message to this users chat
 	socket.on('private message', function(msg) {
 		console.log("pm123")
 		console.log(msg);
@@ -32,7 +32,7 @@ $(function() {
 								+ ": " + msg.message));
 		$('#messages')[0].scrollTo(0, $('#messages')[0].scrollHeight);
 	});
-
+	//adds a system message to this users chat
 	socket.on('system message', function(msg) {
 		console.log("sys");
 		$('#messages').append(
@@ -40,7 +40,7 @@ $(function() {
 						msg.timestamp + "SYSTEM: " + msg.user + msg.action));
 		$('#messages')[0].scrollTo(0, $('#messages')[0].scrollHeight);
 	});
-
+	//adds a message in form of a server response to a command to this users chat
 	socket.on('command',
 			function(msg) {
 				$('#messages').append(
@@ -55,7 +55,7 @@ $(function() {
 		// id="fileMessage">').text(msg.timestamp+msg.id+": "+msg.content));
 		$('#messages').append(
 				$('<a id="file" href = "Temp/' + msg.fileName + '" download>'
-						+ '<img id= "fileImg" src="Media/file.png" alt = "'
+						+ '<img id= "fileImg" title="'+ msg.fileName +'" src="Media/file.png" alt = "'
 						+ msg.fileName + '">' + '</a>')); // onclick="downloadFile('+"'"+msg.fileName+"'"+')"
 		// //
 		$('#messages')[0].scrollTo(0, $('#messages')[0].scrollHeight);
@@ -63,10 +63,7 @@ $(function() {
 
 	// ////////////////
 	// listen on server, entered chat
-	socket
-			.on(
-					'enter',
-					function(nick) {
+	socket.on('enter',function(nick) {
 						console.log(nick);
 						// myNick=nick;
 						console.log("socket on enter");
@@ -77,56 +74,63 @@ $(function() {
 							smilies += '<span class="smilies" id="&#' + i
 									+ '">&#' + i + '</span>';
 						}
-
+						//here the log in screen gets replaced by the chat
 						var chat = '<div id="chatWrapper"><div id="onlineUserWidget"></div><div id="chatMainFrame"><ul id="messages"></ul><form id="chat" action=""><input type="submit" id="inputSubmit"><div id="smilies">'
 								+ smilies
 								+ '</div><div id="dFileUpload"><input type="file" id="f" /><button id="bFileUpload">File attachment</button><div id="d"></div></div><input id="m" autocomplete="off" /><button id="bChat">Send</button><button id="bSmilies">&#128512</button></form></div></div>';
 						$("body").empty();
 						$("body").append(chat);
 
-						document.getElementById('f').addEventListener('change',
-								FileChosen);
-
+						document.getElementById('f').addEventListener('change',FileChosen);
+						
 						// ////////////////
 						// send chat message; button pressed // eventhandler
 						// only after "chat" is created
-						$("#chat").submit(function() {
-							var isPrivate;
-							// if the message is a command
-							if ($('#m').val().charAt(0) === "\\") {
-								socket.emit('command', {
-									id : nick,
-									content : $('#m').val()
-								})
-								isPrivate = true
-								// normal message
-							} else {
-								socket.emit("chat message", {
-									id : nick,
-									content : $("#m").val(),
-									timestamp : ""
+						$("#chat").submit(
+								function() {
+									//if there is nothing to be sent
+									if ($('#m').val() === ""
+											&& fileSelected === undefined) {
+										alert("please send a message or file")
+									} else { 	
+										var isPrivate;
+										// if the message is a command
+										if ($('#m').val().charAt(0) === "\\") {
+											socket.emit('command', {
+												id : nick,
+												content : $('#m').val()
+											})
+											isPrivate = true
+											// normal message
+										} else {
+											socket.emit("chat message", {
+												id : nick,
+												content : $("#m").val(),
+												timestamp : ""
+											});
+											isPrivate = false
+										}
+										// if a file is send with the message
+										if (fileSelected != undefined) {
+											socket.emit('upload', {
+												file : fileSelected,
+												fileName : fileSelected.name,
+												id : nick,
+												content : $("#m").val(),
+												isPrivate : isPrivate
+											})// type:fileSelected.type
+											$('#d').html("");
+											fileSelected = undefined;
+										}
+									}
+									$("#m").val("");
+									$('#smilies').hide();
+
+									return false;
 								});
-								isPrivate = false
-							}
-							// if a file is send with the message
-							if (fileSelected != undefined) {
-								socket.emit('upload', {
-									file : fileSelected,
-									fileName : fileSelected.name,
-									id : nick,
-									content : $("#m").val(),
-									isPrivate : isPrivate
-								})// type:fileSelected.type
-								$('#d').html("");
-								fileSelected = undefined;
-							}
-							$("#m").val("");
-							$('#smilies').hide();
-							return false;
-						});
 
 						// ///////////////////////
-
+						
 						$('#bFileUpload').on("click", function() {
 							$('#f').click();
 							return false;
@@ -143,7 +147,8 @@ $(function() {
 							var chatmessage = $('#m').val();
 							$('#m').val(chatmessage + smilie);
 						})
-
+						//if a name on the widget is clicked, the syntax 
+						//for a pm to that user will be added to this users message box.
 						$('#onlineUserWidget')
 								.on(
 										"click",
