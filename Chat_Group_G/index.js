@@ -33,7 +33,6 @@ io.on('connection', function(socket) {
 
 	// on chatmessage, send to all clients
 	socket.on('chat message', function(msg) {
-		console.log(__dirname)
 		msg.timestamp = timestamp();
 		io.emit('chat message', msg);
 	});
@@ -135,7 +134,6 @@ io.on('connection', function(socket) {
 	// gets a file object and uses an fs stream to write it to a file. Then
 	// sends the file as a file message to all users
 	socket.on('upload', function(file) {
-		console.log(file)
 
 		var stream = fs.createWriteStream("public/Temp/" + file.fileName)
 		stream.once('open', function() {

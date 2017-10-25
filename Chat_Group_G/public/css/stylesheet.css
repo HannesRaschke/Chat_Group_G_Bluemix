@@ -130,6 +130,7 @@ button:hover {
 	padding: 10px 85px 10px 45px;
 	width: 100%;
 	border-top: 1px solid grey;
+	height: 35px;
 }
 
 #d {
@@ -150,6 +151,9 @@ button:hover {
 	bottom: 0px;
 	border-right: none;
 	border-bottom: none;
+	border-top: none;
+	height: 35px;
+	
 }
 
 #bFileUpload {
@@ -161,12 +165,13 @@ button:hover {
 
 #bSmilies {
 	width: 35px;
-	padding: 10px;
-	position: absolute;
-	left: 0px;
-	bottom: 0px;
-	border-left: none;
-	border-bottom: none;
+    position: absolute;
+    left: 0px;
+    bottom: 0px;
+    border-left: none;
+    border-bottom: none;
+    border-top: none;
+    height: 35px;
 }
 
 .smilies {

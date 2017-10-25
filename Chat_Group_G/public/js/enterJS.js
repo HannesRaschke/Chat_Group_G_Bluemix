@@ -7,7 +7,6 @@ $(function() {
 	$("#enterUsername").submit(function() {
 		nick = document.getElementById("userNameInp").value;
 		socket.emit("clientEnterEvent", nick);
-		console.log("hi")
 		return false;
 	});
 
@@ -15,8 +14,6 @@ $(function() {
 	// listen on server, chat message received
 	//adds a normal chat message to this users chat
 	socket.on('chat message', function(msg) {
-		console.log("message123")
-		console.log(msg);
 
 		$('#messages').append(
 				$('<li>').text(msg.timestamp + msg.id + ": " + msg.content));
@@ -24,8 +21,6 @@ $(function() {
 	});
 	//adds a message in form of a private message to this users chat
 	socket.on('private message', function(msg) {
-		console.log("pm123")
-		console.log(msg);
 		$('#messages').append(
 				$('<li id="privateMessage">').text(
 						msg.timestamp + msg.from + " whispers to " + msg.to
@@ -34,7 +29,6 @@ $(function() {
 	});
 	//adds a system message to this users chat
 	socket.on('system message', function(msg) {
-		console.log("sys");
 		$('#messages').append(
 				$('<li id="systemMessage">').text(
 						msg.timestamp + "SYSTEM: " + msg.user + msg.action));
@@ -64,10 +58,6 @@ $(function() {
 	// ////////////////
 	// listen on server, entered chat
 	socket.on('enter',function(nick) {
-						console.log(nick);
-						// myNick=nick;
-						console.log("socket on enter");
-						console.log(nick);
 
 						var smilies = "";
 						for (var i = 128512; i <= 128591; i++) {
@@ -137,7 +127,6 @@ $(function() {
 						});
 
 						$('#bSmilies').on("click", function() {
-							console.log("smilies");
 							$('#smilies').toggle();
 							return false;
 						});
@@ -173,13 +162,14 @@ $(function() {
 	// onclick function for the file upload
 	function FileChosen(event) {
 		if(event.target.files[0]===undefined || event.target.files[0].size>999999){
-			alert("please accept a file smaller than 1MB")
+			alert("please choose a file smaller than 1MB")
 		}else{
 			fileSelected = event.target.files[0]
 			$('#d').html("File Selected: " + fileSelected.name);
 		}
 	}
 
+	//building the content for the online user widget
 	socket.on('OnlineUserWidget', function(msg) {
 		var OUWUsers = "Online Users:<br>";
 		for (var i = 0; i < msg.content.length; i++) {
@@ -187,9 +177,6 @@ $(function() {
 					+ msg.content[i] + '</span><br>';
 		}
 
-		console.log("ouw");
-		console.log(msg.content);
-		console.log(OUWUsers);
 		$('#onlineUserWidget').empty();
 		$('#onlineUserWidget').append(OUWUsers);
 	})
