@@ -1,7 +1,7 @@
 {
   "name": "Chat_Group_G",
   "version": "0.0.1",
-  "description": "my first socket.io app",
+  "description": "chat based on socket.io chat example",
   "dependencies": {
     "express": "^4.15.2",
     "socket.io": "^1.7.3"

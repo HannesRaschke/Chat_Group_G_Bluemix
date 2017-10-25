@@ -1,7 +1,6 @@
 {
   "name": "Chat_Group_G",
-  "description": "my first socket.io app",
-  "logo": "https://node-js-sample.herokuapp.com/node.svg",
+  "description": "chat based on socket.io chat example",
   "success_url": "/",
   "keywords": [
     "node",
