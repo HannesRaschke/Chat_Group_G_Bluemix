@@ -45,7 +45,7 @@ io.on('connection', function(socket) {
 		if (flag === "\\pm") {
 			var receiver = users[msgElements[1]];
 			if (receiver === undefined) {
-				io.to(users[msg.id]).emit('private message', {});
+				io.to(users[msg.id]).emit('command', {timestamp:timestamp(),content:"please enter a reciever"});
 			} else {
 				for ( var id in users) {
 					if (receiver === users[id]) {

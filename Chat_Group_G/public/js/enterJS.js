@@ -172,8 +172,12 @@ $(function() {
 
 	// onclick function for the file upload
 	function FileChosen(event) {
-		fileSelected = event.target.files[0]
-		$('#d').html("File Selected: " + fileSelected.name);
+		if(event.target.files[0]===undefined || event.target.files[0].size>999999){
+			alert("please accept a file smaller than 1MB")
+		}else{
+			fileSelected = event.target.files[0]
+			$('#d').html("File Selected: " + fileSelected.name);
+		}
 	}
 
 	socket.on('OnlineUserWidget', function(msg) {
