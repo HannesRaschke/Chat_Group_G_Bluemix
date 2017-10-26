@@ -1,6 +1,6 @@
 /////////////////////
-//Dennis Funk
-//Hannes Raschke
+//Dennis Funk 752728
+//Hannes Raschke 751219
 //Group G
 //
 
@@ -56,7 +56,7 @@ $(function() {
 		$('#messages').append(
 				$('<a id="file" href = "Temp/' + msg.fileName + '" download>'
 						+ '<img id= "fileImg" title="'+ msg.fileName +'" src="Media/file.png" alt = "'
-						+ msg.fileName + '">' + '</a>')); // onclick="downloadFile('+"'"+msg.fileName+"'"+')"
+						+ msg.fileName + '">' + msg.fileName + '</a>')); // onclick="downloadFile('+"'"+msg.fileName+"'"+')"
 		// //
 		$('#messages')[0].scrollTo(0, $('#messages')[0].scrollHeight);
 	});

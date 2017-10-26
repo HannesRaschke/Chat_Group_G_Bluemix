@@ -1,6 +1,6 @@
 /////////////////////
-//Dennis Funk
-//Hannes Raschke
+//Dennis Funk 752728
+//Hannes Raschke 751219
 //Group G
 //
 

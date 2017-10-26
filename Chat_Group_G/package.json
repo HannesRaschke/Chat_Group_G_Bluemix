@@ -8,5 +8,8 @@
   },
   "scripts": {
     "start": "node index.js"
-  }
-}
+  },
+  "contributors": [
+  {"name": "Dennis Funk 752728"},
+  {"name": "Hannes Raschke 751219"}
+  ]}
