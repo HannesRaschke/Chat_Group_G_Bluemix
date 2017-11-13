@@ -22,7 +22,7 @@ $(function() {
 	socket.on('chat message', function(msg) {
 
 		$('#messages').append(
-				$('<li>').text(msg.timestamp + msg.id + ": " + msg.content));
+				$('<li>').text(msg.timestamp + msg.id + " seems to be " + msg.userMood +": " + msg.content));
 		$('#messages')[0].scrollTo(0, $('#messages')[0].scrollHeight);
 	});
 	//adds a message in form of a private message to this users chat
@@ -102,7 +102,8 @@ $(function() {
 											socket.emit("chat message", {
 												id : nick,
 												content : $("#m").val(),
-												timestamp : ""
+												timestamp : "",
+												userMood : ""
 											});
 											isPrivate = false
 										}

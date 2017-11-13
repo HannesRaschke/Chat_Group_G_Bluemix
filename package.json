@@ -4,12 +4,18 @@
   "description": "chat based on socket.io chat example",
   "dependencies": {
     "express": "^4.15.2",
+    "request": "^2.83.0",
     "socket.io": "^1.7.3"
   },
   "scripts": {
     "start": "node index.js"
   },
   "contributors": [
-  {"name": "Dennis Funk 752728"},
-  {"name": "Hannes Raschke 751219"}
-  ]}
+    {
+      "name": "Dennis Funk 752728"
+    },
+    {
+      "name": "Hannes Raschke 751219"
+    }
+  ]
+}

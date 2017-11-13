@@ -12,6 +12,7 @@ var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 var path = require('path');
 var fs = require('fs')
+var request = require('request')
 
 var users = {};
 
@@ -33,8 +34,12 @@ io.on('connection', function(socket) {
 
 	// on chatmessage, send to all clients
 	socket.on('chat message', function(msg) {
-		msg.timestamp = timestamp();
-		io.emit('chat message', msg);
+		//callback function to wait for mood response
+		var moods = getMood(msg.content, function(mood){
+			msg.timestamp = timestamp();
+			msg.userMood = mood;
+			io.emit('chat message', msg);
+		});
 	});
 
 	// if a command is send, check what kind of command
@@ -180,6 +185,24 @@ io.on('connection', function(socket) {
 
 	});
 });
+
+function getMood(msg, callback){
+	request.post({
+	url: 'https://thirsty-volhard-specificative-undercrier.eu-de.mybluemix.net/tone',
+	headers: {
+         'Accept': 'application/json',
+         'Content-Type': 'application/json',
+         'mode': 'cors'
+     },
+	body: JSON.stringify({
+		 texts: [msg],
+	   })
+	}, function(error,response,body){
+		var mood = body.split('"');
+		console.log(mood[3]);
+	callback(mood[3]);
+	})
+}
 
 // ////////////////////////////////////////////////////////////////////
 
