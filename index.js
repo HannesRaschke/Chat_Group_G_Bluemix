@@ -186,6 +186,7 @@ io.on('connection', function(socket) {
 	});
 });
 
+//let tone analyzer get the senders mood
 function getMood(msg, callback){
 	request.post({
 	url: 'https://thirsty-volhard-specificative-undercrier.eu-de.mybluemix.net/tone',
@@ -198,9 +199,9 @@ function getMood(msg, callback){
 		 texts: [msg],
 	   })
 	}, function(error,response,body){
-		var mood = body.split('"');
-		console.log(mood[3]);
-	callback(mood[3]);
+		var mood = JSON.parse(body);
+		console.log(mood.mood);
+	callback(mood.mood);
 	})
 }
 
