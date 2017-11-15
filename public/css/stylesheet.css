@@ -8,7 +8,7 @@
 
 body {
 	font: 13px Helvetica, Arial;
-	background-color: pink;
+	background-color: #c0c0c0;
 }
 
 button {
@@ -41,12 +41,13 @@ button:hover {
 	width: 100%;
 }
 
-#userNameInp, #userNameBtn {
+#userNameInp, #userNameBtn, #goToRegisterBtn, #psw {
 	width: 100%;
 	padding: 10px;
 }
 
-#enterUsername {
+
+#LoginRegister {
 	width: 280px;
 }
 
@@ -155,7 +156,6 @@ button:hover {
 	border-bottom: none;
 	border-top: none;
 	height: 35px;
-	
 }
 
 #bFileUpload {

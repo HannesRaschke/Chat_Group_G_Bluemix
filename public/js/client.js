@@ -12,9 +12,31 @@ $(function() {
 	// username entered; button pressed
 	$("#enterUsername").submit(function() {
 		nick = document.getElementById("userNameInp").value;
-		socket.emit("clientEnterEvent", nick);
+		pw = document.getElementById("psw").value;
+		socket.emit("login", nick, pw);
 		return false;
 	});
+	
+	$("#goToRegisterBtn").on("click",function() {
+		var register = '<form id="registerForm" action=""><label>Username</label><input id="desiredUsrname" type="text" placeholder="Enter Username" required><br><label>Password</label><input type="password" id="pw1" placeholder="Enter Password" required><br><label>Repeat Password</label><input id="pw2" type="password" placeholder="Repeat Password" required><br><button id="register">Register</button></form>';
+	$("body").empty();
+	$("body").append(register);
+	
+	$("#register").on("click", function(){
+		console.log("test");
+		nick = document.getElementById("desiredUsrname").value;
+		pw1 = document.getElementById("pw1").value;
+		pw2 = document.getElementById("pw2").value;
+		socket.emit("registerClient", nick, pw1, pw2);
+		return false;
+	});
+		return false;
+	});
+	
+	socket.on('RegError', function(errmsg){
+		alert(errmsg);
+	});
+	
 
 	// ////////////////
 	// listen on server, chat message received
@@ -63,6 +85,7 @@ $(function() {
 
 	// ////////////////
 	// listen on server, entered chat
+	// html to replace login page
 	socket.on('enter',function(nick) {
 
 						var smilies = "";

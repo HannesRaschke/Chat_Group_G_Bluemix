@@ -32,6 +32,26 @@ app.use(express.static(path.join(__dirname, 'public')));
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
 
+	//on register client check password and name
+	socket.on('registerClient', function(nick, pw1, pw2){
+		if (!(/^\w+$/.test(nick))){
+			var errmsg = "Nick can only consist of numbers and letters";
+			socket.emit('RegError', errmsg);
+		}
+		if(pw1!==pw2){
+			var errmsg = "Passwords do not match";
+			socket.emit('RegError', errmsg);
+		}
+		console.log("testtt");
+		enterChat(nick, socket);
+	});
+	
+	//on login check if password is ok
+	socket.on('login', function(nick, pw){
+		enterChat(nick, socket);
+	});
+	
+	
 	// on chatmessage, send to all clients
 	socket.on('chat message', function(msg) {
 		//callback function to wait for mood response
@@ -94,7 +114,8 @@ io.on('connection', function(socket) {
 	});
 
 	// on client enter save nickname and send join message to clients
-	socket.on('clientEnterEvent', function(nick) {
+	socket.on('clientEnterEvent', function(nick, pw) {
+		console.log("test");
 		if (/^\w+$/.test(nick)) {
 			// if nick does not exist yet
 			if (!(nick in users)) {
@@ -186,6 +207,26 @@ io.on('connection', function(socket) {
 	});
 });
 
+///////////////////////////////////////////////////////////////////////
+
+function enterChat(nick, socket) {
+			// connects the user to their socket id
+			users[nick] = socket.id;
+			socket.emit('enter', nick);
+			// Save nickname on socket
+			socket.nickname = nick;
+			io.emit('system message', {
+				action : " joined",
+				timestamp : timestamp(),
+				user : socket.nickname
+			});
+			var OnlineUser = Object.keys(users);
+			io.emit('OnlineUserWidget', {
+				content : OnlineUser
+			});
+}
+
+///////////////////////////////////////////////////////////////////////
 //let tone analyzer get the senders mood
 function getMood(msg, callback){
 	request.post({
