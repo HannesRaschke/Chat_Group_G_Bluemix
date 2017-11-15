@@ -17,8 +17,7 @@ var Cloudant = require('cloudant');
 
 ////////////////////
 //cloudant
-
-var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_Services)});
+var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
 var db = cloudant.db.use('users');
 //////////////////////
 
