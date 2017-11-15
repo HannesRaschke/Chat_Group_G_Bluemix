@@ -11,8 +11,16 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || 3000;
 var path = require('path');
-var fs = require('fs')
-var request = require('request')
+var fs = require('fs');
+var request = require('request');
+var Cloudant = require('cloudant');
+
+////////////////////
+//cloudant
+
+var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_Services)});
+var db = cloudant.db.use('users');
+//////////////////////
 
 var users = {};
 
@@ -29,18 +37,27 @@ app.get('/', function(req, res) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
 
 	//on register client check password and name
 	socket.on('registerClient', function(nick, pw1, pw2){
+		
+		
 		if (!(/^\w+$/.test(nick))){
 			var errmsg = "Nick can only consist of numbers and letters";
 			socket.emit('RegError', errmsg);
 		}
-		if(pw1!==pw2){
+		else if(pw1!==pw2){
 			var errmsg = "Passwords do not match";
 			socket.emit('RegError', errmsg);
+		}else{
+			db.insert({password: pw1}, nick  , function(err,body,header){
+				if(err){
+					return console.log("[db.insert]",err.message);
+				}
+			});
 		}
 		console.log("testtt");
 		enterChat(nick, socket);
@@ -210,6 +227,7 @@ io.on('connection', function(socket) {
 ///////////////////////////////////////////////////////////////////////
 
 function enterChat(nick, socket) {
+			
 			// connects the user to their socket id
 			users[nick] = socket.id;
 			socket.emit('enter', nick);
