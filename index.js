@@ -17,7 +17,8 @@ var Cloudant = require('cloudant');
 
 ////////////////////
 //cloudant
-var cloudant = Cloudant({instanceName: 'Cloudant NoSQL DB-j5', vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
+var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
+var cloudant = Cloudant({instanceName: 'CloudantDBCC', vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
 var db = cloudant.db.use('users');
 //////////////////////
 
