@@ -22,6 +22,10 @@ var Cloudant = require('cloudant');
 
 var cloudant = Cloudant({instanceName: 'CloudantDBCC', vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
 
+var username = cloudantNoSQLDB[0].credentials.host;
+var password = cloudantNoSQLDB[0].credentials.password;
+var cloudant = Cloudant({account:username, password:password});
+
 var db = cloudant.db.use('users');
 
 //////////////////////
