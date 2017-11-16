@@ -20,7 +20,7 @@ var Cloudant = require('cloudant');
 ////////////////////
 //cloudant
 
-var vcapJSON = process.env.VCAP_SERVICES;
+var vcapJSON = process.env.test;
 throw new Error (vcapJSON);
 
 var username = vcapJSON.cloudantNoSQLDB[0].credentials.host;
