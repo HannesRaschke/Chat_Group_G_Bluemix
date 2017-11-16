@@ -22,12 +22,11 @@ var Cloudant = require('cloudant');
 
 
 
-//var vcapServices = require('./vcap-local.json');
-
-//console.log(vcapServices.cloudantNoSQLDB[0].username);
-
-
+//var vcapServices = require('./vcap-local.json')
+//console.log(vcapServices.cloudantNoSQLDB[0].credentials.password);
 //var cloudant = Cloudant({vcapServices: vcapServices});
+
+
 var cloudant = Cloudant({vcapServices: process.env.VCAP_SERVICES});
 
 var db = cloudant.db.use('users');
