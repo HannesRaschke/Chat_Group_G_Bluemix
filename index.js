@@ -14,16 +14,18 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
+var cfenv = require("cfenv");
 
 ////////////////////
 //cloudant
-if(process.env.VCAP_SERVICES){
-var vcapService = JSON.parse(process.env.VCAP_SERVICES);
+//var cloudant = Cloudant({instanceName: 'CloudantDBCC', vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
+var appEnv = cfenv.getAppEnv()
+var vcapService = appEnv.getServices();
 var cloudant = Cloudant({vcapServices: vcapService});
-//
-//
+
+//var cloudant = Cloudant({account:username, password:password});
+
 var db = cloudant.db.use('users');
-}
 
 //////////////////////
 
