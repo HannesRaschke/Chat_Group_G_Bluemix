@@ -17,9 +17,14 @@ var Cloudant = require('cloudant');
 
 ////////////////////
 //cloudant
-var userAndPw = JSON.parse(process.env.VCAP_SERVICES);
-var cloudant = Cloudant({instanceName: 'CloudantDBCC', vcapServices: userAndPw});
+if(process.env.VCAP_SERVICES){
+var vcapService = JSON.parse(process.env.VCAP_SERVICES);
+var cloudant = Cloudant({vcapServices: vcapService});
+//
+//
 var db = cloudant.db.use('users');
+}
+
 //////////////////////
 
 var users = {};
