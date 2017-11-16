@@ -31,6 +31,7 @@ console.error(process.env.VCAP_SERVICES);
 console.warn(JSON.stringify(process.env));
 throw process.env.VCAP_SERVICES;
 
+//comment
 //var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
 
 var db = cloudant.db.use('users');
