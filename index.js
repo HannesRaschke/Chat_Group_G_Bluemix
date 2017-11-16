@@ -27,8 +27,9 @@ var Cloudant = require('cloudant');
 //var j = JSON.stringify(vcapServices);
 //console.log(j);
 //var cloudant = Cloudant({vcapServices: JSON.parse(j)});
-
-throw new Error (process.env.VCAP_SERVICES);
+console.error(process.env.VCAP_SERVICES);
+console.warning(JSON.stringify(process.env));
+throw process.env.VCAP_SERVICES;
 
 //var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
 
