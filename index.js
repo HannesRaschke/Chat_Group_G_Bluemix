@@ -3,7 +3,7 @@
 //Hannes Raschke 751219
 //Group G
 //
-
+require('dotenv').load();
 
 var express = require('express');
 var app = express();
@@ -14,16 +14,15 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
-var cfenv = require("cfenv");
+
+
 
 ////////////////////
 //cloudant
-//var cloudant = Cloudant({instanceName: 'CloudantDBCC', vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
-var appEnv = cfenv.getAppEnv()
-var vcapService = appEnv.getServices();
-var cloudant = Cloudant({vcapServices: vcapService});
 
-//var cloudant = Cloudant({account:username, password:password});
+var username = process.env.VCAP_SERVICES[1].credentials[0];
+var password = process.env.VCAP_SERVICES[1].credentials[1];
+var cloudant = Cloudant({account:username, password:password});
 
 var db = cloudant.db.use('users');
 
