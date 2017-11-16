@@ -9,7 +9,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-var port = process.env.PORT || 3000;
+var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
 var path = require('path');
 var fs = require('fs');
 var request = require('request');
@@ -18,7 +18,8 @@ var Cloudant = require('cloudant');
 ////////////////////
 //cloudant
 //var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
-var cloudant = Cloudant({instanceName: 'CloudantDBCC', vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
+var userAndPw = JSON.parse(process.env.VCAP_SERVICES);
+var cloudant = Cloudant({instanceName: 'CloudantDBCC', vcapServices: userAndPw});
 var db = cloudant.db.use('users');
 //////////////////////
 
