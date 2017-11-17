@@ -9,9 +9,6 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
-var cfenv = require("cfenv");
-var appEnv = cfenv.getAppEnv();
-//var path = appEnv.path;
 var path = require('path');
 var fs = require('fs');
 var request = require('request');
@@ -25,23 +22,13 @@ if(fs.existsSync('./vcap-local.json')){
 	var vcapLocal = require('./vcap-local.json');
 	var vcapLocalJSON = JSON.stringify(vcapLocal);
 	console.log(vcapLocalJSON);
+}else if (process.env.VCAP_SERVICES) {
+    var env = JSON.parse(process.env.VCAP_SERVICES);
+}else{
+	console.err("No database credentials found");
 }
-//console.error(process.env.VCAP_SERVICES);
-//console.warn(JSON.stringify(process.env));
-//throw process.env.VCAP_SERVICES;
 
-
-if (process.env.VCAP_SERVICES) {
-    var env = JSON.parse (process.env.VCAP_SERVICES);
-    console.warn(env);
-}
 var creds = vcapLocalJSON || env;
-
-
-//var cloudant = Cloudant({account:username, password:password});
-console.warn("WARNWARNWARNwarnWARNWARNWARN");
-//throw process.env.VCAP_SERVICES;
-
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 
 var db = cloudant.db.use('users');
