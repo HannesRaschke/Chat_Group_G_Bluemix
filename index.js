@@ -21,17 +21,26 @@ var Cloudant = require('cloudant');
 
 
 
+cloudantNoSQLDB[0].credentials.username
 //
 //var vcapServices = require('./vcap-local.json');
 //console.log(vcapServices);
 //var j = JSON.stringify(vcapServices);
 //console.log(j);
 //var cloudant = Cloudant({vcapServices: JSON.parse(j)});
-console.error(process.env.VCAP_SERVICES);
-console.warn(JSON.stringify(process.env));
-throw process.env.VCAP_SERVICES;
 
-//comment
+//console.error(process.env.VCAP_SERVICES);
+//console.warn(JSON.stringify(process.env));
+//throw process.env.VCAP_SERVICES;
+
+console.log("HALLO");
+console.log(process.env.uname);
+console.log(JSON.parse(process.env.uname));
+
+var username = JSON.parse(process.env.uname);
+var password = process.env.upw.value;
+var cloudant = Cloudant({account:username, password:password});
+
 //var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
 
 var db = cloudant.db.use('users');
