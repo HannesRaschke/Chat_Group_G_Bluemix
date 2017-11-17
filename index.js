@@ -14,27 +14,7 @@ var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
 
-
-////////////////////
-//cloudant
-
-if(fs.existsSync('./vcap-local.json')){
-	var vcapLocal = require('./vcap-local.json');
-	var vcapLocalJSON = JSON.stringify(vcapLocal);
-	console.log(vcapLocalJSON);
-}else if (process.env.VCAP_SERVICES) {
-    var env = JSON.parse(process.env.VCAP_SERVICES);
-}else{
-	console.err("No database credentials found");
-}
-
-var creds = vcapLocalJSON || env;
-var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
-
-var db = cloudant.db.use('users');
-
-
-//////////////////////
+var dbConnection = false;
 
 var users = {};
 
@@ -54,8 +34,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
-
-	//on register client check password and name
+	
+	if(dbConnection === false){
+	createDbConnection(function (){dbConnection = true;});
+	}
+	
+	
+	// on register client check password and name
 	socket.on('registerClient', function(nick, pw1, pw2){
 		
 		
@@ -73,11 +58,10 @@ io.on('connection', function(socket) {
 				}
 			});
 		}
-		console.log("testtt");
 		enterChat(nick, socket);
 	});
 	
-	//on login check if password is ok
+	// on login check if password is ok
 	socket.on('login', function(nick, pw){
 		enterChat(nick, socket);
 	});
@@ -85,7 +69,7 @@ io.on('connection', function(socket) {
 	
 	// on chatmessage, send to all clients
 	socket.on('chat message', function(msg) {
-		//callback function to wait for mood response
+		// callback function to wait for mood response
 		var moods = getMood(msg.content, function(mood){
 			msg.timestamp = timestamp();
 			msg.userMood = mood;
@@ -146,7 +130,6 @@ io.on('connection', function(socket) {
 
 	// on client enter save nickname and send join message to clients
 	socket.on('clientEnterEvent', function(nick, pw) {
-		console.log("test");
 		if (/^\w+$/.test(nick)) {
 			// if nick does not exist yet
 			if (!(nick in users)) {
@@ -238,7 +221,7 @@ io.on('connection', function(socket) {
 	});
 });
 
-///////////////////////////////////////////////////////////////////////
+// /////////////////////////////////////////////////////////////////////
 
 function enterChat(nick, socket) {
 			
@@ -258,8 +241,8 @@ function enterChat(nick, socket) {
 			});
 }
 
-///////////////////////////////////////////////////////////////////////
-//let tone analyzer get the senders mood
+// /////////////////////////////////////////////////////////////////////
+// let tone analyzer get the senders mood
 function getMood(msg, callback){
 	request.post({
 	url: 'https://thirsty-volhard-specificative-undercrier.eu-de.mybluemix.net/tone',
@@ -273,7 +256,6 @@ function getMood(msg, callback){
 	   })
 	}, function(error,response,body){
 		var mood = JSON.parse(body);
-		console.log(mood.mood);
 	callback(mood.mood);
 	})
 }
@@ -295,3 +277,26 @@ function timestamp() {
 	return time;
 	// msg.timestamp = timestamp();
 }
+
+////////////////////
+//cloudant
+
+function createDbConnection()
+{
+	console.log("create db");
+	if(fs.existsSync('./vcap-local.json')){
+	var vcapLocal = require('./vcap-local.json');
+	var vcapLocalJSON = JSON.stringify(vcapLocal);
+}else if (process.env.VCAP_SERVICES) {
+ var env = JSON.parse(process.env.VCAP_SERVICES);
+}else{
+	console.err("No database credentials found");
+}
+var creds = vcapLocalJSON || env;
+var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
+
+var db = cloudant.db.use('users');
+}
+
+
+//////////////////////
