@@ -41,7 +41,7 @@ console.log(appEnv);
 
 //var cloudant = Cloudant({account:username, password:password});
 
-var cloudant = Cloudant({vcapServices: appEnv.VCAP_SERVICES});
+var cloudant = Cloudant({vcapServices: appEnv.services});
 
 var db = cloudant.db.use('users');
 
