@@ -11,8 +11,8 @@ var io = require('socket.io')(http);
 var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
 var cfenv = require("cfenv");
 var appEnv = cfenv.getAppEnv();
-var path = appEnv.path;
-//var path = require('path');
+//var path = appEnv.path;
+var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
@@ -21,30 +21,23 @@ var Cloudant = require('cloudant');
 ////////////////////
 //cloudant
 
-
-
-//
-//var vcapServices = require('./vcap-local.json');
-//console.log(vcapServices);
-//var j = JSON.stringify(vcapServices);
-//console.log(j);
-//var cloudant = Cloudant({vcapServices: JSON.parse(j)});
-
+if(fs.existsSync('./vcap-local.json')){
+	var vcapLocal = require('./vcap-local.json');
+	var vcapLocalJSON = JSON.stringify(vcapLocal);
+	console.log(vcapLocalJSON);
+}
 //console.error(process.env.VCAP_SERVICES);
 //console.warn(JSON.stringify(process.env));
 //throw process.env.VCAP_SERVICES;
 
-console.log("HALLO");
-
-
-console.log(appEnv);
+var creds = vcapLocalJSON || appEnv.services;
 
 //var cloudant = Cloudant({account:username, password:password});
-console.error(appEnv);
-console.warn(appEnv.getServiceCreds(Chat_Group_G_Bluemix));
-throw process.env.VCAP_SERVICES;
+//console.error(appEnv);
+//console.warn(appEnv.);
+//throw process.env.VCAP_SERVICES;
 
-var cloudant = Cloudant({vcapServices: appEnv.services});
+var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 
 var db = cloudant.db.use('users');
 
