@@ -30,12 +30,16 @@ if(fs.existsSync('./vcap-local.json')){
 //console.warn(JSON.stringify(process.env));
 //throw process.env.VCAP_SERVICES;
 
-var creds = vcapLocalJSON || appEnv.services;
+
+if (process.env.VCAP_SERVICES) {
+    var env = JSON.parse (process.env.VCAP_SERVICES);
+    console.warn(env);
+}
+var creds = vcapLocalJSON || env;
+
 
 //var cloudant = Cloudant({account:username, password:password});
 console.warn("WARNWARNWARNwarnWARNWARNWARN");
-console.warn(appEnv);
-console.log(appEnv);
 //throw process.env.VCAP_SERVICES;
 
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
