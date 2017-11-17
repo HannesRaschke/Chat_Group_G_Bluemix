@@ -3,6 +3,7 @@
   "version": "0.0.1",
   "description": "chat based on socket.io chat example",
   "dependencies": {
+    "cfenv": "^1.0.4",
     "cloudant": "^1.10.0",
     "express": "^4.15.2",
     "request": "^2.83.0",

@@ -9,11 +9,13 @@ var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
-var path = require('path');
+var cfenv = require("cfenv");
+var appEnv = cfenv.getAppEnv();
+var path = appEnv.path;
+//var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
-
 
 
 ////////////////////
@@ -21,7 +23,6 @@ var Cloudant = require('cloudant');
 
 
 
-cloudantNoSQLDB[0].credentials.username
 //
 //var vcapServices = require('./vcap-local.json');
 //console.log(vcapServices);
@@ -34,16 +35,16 @@ cloudantNoSQLDB[0].credentials.username
 //throw process.env.VCAP_SERVICES;
 
 console.log("HALLO");
-console.log(process.env.uname);
-console.log(JSON.parse(process.env.uname));
 
-var username = JSON.parse(process.env.uname);
-var password = process.env.upw.value;
-var cloudant = Cloudant({account:username, password:password});
 
-//var cloudant = Cloudant({vcapServices: JSON.parse(process.env.VCAP_SERVICES)});
+console.log(appEnv);
+
+//var cloudant = Cloudant({account:username, password:password});
+
+var cloudant = Cloudant({vcapServices: appEnv.VCAP_SERVICES});
 
 var db = cloudant.db.use('users');
+
 
 //////////////////////
 
