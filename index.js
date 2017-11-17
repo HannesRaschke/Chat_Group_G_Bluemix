@@ -34,7 +34,8 @@ var creds = vcapLocalJSON || appEnv.services;
 
 //var cloudant = Cloudant({account:username, password:password});
 console.warn("WARNWARNWARNwarnWARNWARNWARN");
-console.warn(appEnv.services);
+console.warn(appEnv);
+console.log(appEnv);
 //throw process.env.VCAP_SERVICES;
 
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
