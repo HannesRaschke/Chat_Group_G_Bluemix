@@ -18,7 +18,7 @@ $(function() {
 	});
 	
 	$("#goToRegisterBtn").on("click",function() {
-		var register = '<form id="registerForm" action=""><label>Username</label><input id="desiredUsrname" type="text" placeholder="Enter Username" required><br><label>Password</label><input type="password" id="pw1" placeholder="Enter Password" required><br><label>Repeat Password</label><input id="pw2" type="password" placeholder="Repeat Password" required><br><button id="register">Register</button></form>';
+		var register = '<form id="registerForm" action=""><label>Username</label><input id="desiredUsrname" type="text" placeholder="Enter Username" required><br><label>Password</label><input type="password" id="pw1" placeholder="Enter Password" required><br><label>Repeat Password</label><input id="pw2" type="password" placeholder="Repeat Password" required><br><input id="pic" type="file" accept="image/*"></input><br><button id="register">Register</button></form>';
 	$("body").empty();
 	$("body").append(register);
 	
@@ -27,7 +27,9 @@ $(function() {
 		nick = document.getElementById("desiredUsrname").value;
 		pw1 = document.getElementById("pw1").value;
 		pw2 = document.getElementById("pw2").value;
-		socket.emit("registerClient", nick, pw1, pw2);
+		pic = document.getElementById("pic").value;
+		
+		socket.emit("registerClient",nick, pw1, pw2, pic);
 		return false;
 	});
 		return false;

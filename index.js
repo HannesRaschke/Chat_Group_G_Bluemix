@@ -42,18 +42,21 @@ io.on('connection', function(socket) {
 	}	
 	
 	// on register client check password and name
-	socket.on('registerClient', function(nick, pw1, pw2){
+	socket.on('registerClient', function(nick, pw1, pw2, pic){
 		
 		
-		if (!(/^\w+$/.test(nick))){
+		if (!(/^\w+$/.test(nick))){ //if the Nickname contains invalid characters
 			var errmsg = "Nick can only consist of numbers and letters";
 			socket.emit('RegError', errmsg);
+			return
 		}
-		else if(pw1!==pw2){
+		else if(pw1!==pw2){//if the repeated password does not match the original one
 			var errmsg = "Passwords do not match";
 			socket.emit('RegError', errmsg);
+			return
 		}else{
-			db.insert({password: pw1}, nick  , function(err,body,header){
+			
+			db.insert({password: pw1, profilePicture: pic}, nick  , function(err,body,header){
 				if(err){
 					return console.log("[db.insert]",err.message);
 				}
@@ -286,19 +289,19 @@ function createDbConnection(db, callback)
 {
 	console.log("create db");
 	if(fs.existsSync('./vcap-local.json')){
-	var vcapLocal = require('./vcap-local.json');
-	var vcapLocalJSON = JSON.stringify(vcapLocal);
-}else if (process.env.VCAP_SERVICES) {
- var env = JSON.parse(process.env.VCAP_SERVICES);
-}else{
-	console.err("No database credentials found");
-}
-var creds = vcapLocalJSON || env;
-console.warn (process.env.VCAP_SERVICES);
-var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
+		var vcapLocal = require('./vcap-local.json');
+		var vcapLocalJSON = JSON.stringify(vcapLocal);
+	}else if (process.env.VCAP_SERVICES) {
+		var env = JSON.parse(process.env.VCAP_SERVICES);
+	}else{
+		console.err("No database credentials found");
+	}
+	var creds = vcapLocalJSON || env;
+	console.warn (process.env.VCAP_SERVICES);
+	var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 
-var db = cloudant.db.use('users');
-callback(db);
+	var db = cloudant.db.use('users');
+	callback(db);
 }
 
 

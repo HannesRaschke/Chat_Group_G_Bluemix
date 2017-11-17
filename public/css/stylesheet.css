@@ -41,13 +41,13 @@ button:hover {
 	width: 100%;
 }
 
-#userNameInp, #userNameBtn, #goToRegisterBtn, #psw {
+#userNameInp, #userNameBtn, #goToRegisterBtn, #psw,#desiredUsrname, #pw1, #pw2, #pic, #register {
 	width: 100%;
 	padding: 10px;
 }
 
 
-#LoginRegister {
+#LoginRegister,#registerForm {
 	width: 280px;
 }
 
