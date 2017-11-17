@@ -40,6 +40,9 @@ console.log("HALLO");
 console.log(appEnv);
 
 //var cloudant = Cloudant({account:username, password:password});
+console.error(appEnv);
+console.warn(appEnv.services);
+throw process.env.VCAP_SERVICES;
 
 var cloudant = Cloudant({vcapServices: appEnv.services});
 
