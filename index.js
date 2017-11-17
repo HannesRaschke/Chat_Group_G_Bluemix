@@ -13,7 +13,7 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
-
+var db;
 var dbConnection = false;
 
 var users = {};
@@ -36,9 +36,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 io.on('connection', function(socket) {
 	
 	if(dbConnection === false){
-	createDbConnection(function (){dbConnection = true;});
-	}
-	
+	createDbConnection(db, function (callback){
+		db = callback;
+		dbConnection = true;});
+	}	
 	
 	// on register client check password and name
 	socket.on('registerClient', function(nick, pw1, pw2){
@@ -281,7 +282,7 @@ function timestamp() {
 ////////////////////
 //cloudant
 
-function createDbConnection()
+function createDbConnection(db, callback)
 {
 	console.log("create db");
 	if(fs.existsSync('./vcap-local.json')){
@@ -297,6 +298,7 @@ console.warn (process.env.VCAP_SERVICES);
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 
 var db = cloudant.db.use('users');
+callback(db);
 }
 
 
