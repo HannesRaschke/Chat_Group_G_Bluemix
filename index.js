@@ -293,7 +293,7 @@ function createDbConnection()
 	console.err("No database credentials found");
 }
 var creds = vcapLocalJSON || env;
-console.err(process.env.VCAP_SERVICES);
+console.warn (process.env.VCAP_SERVICES);
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 
 var db = cloudant.db.use('users');
