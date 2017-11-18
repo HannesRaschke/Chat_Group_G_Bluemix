@@ -67,13 +67,15 @@ io.on('connection', function(socket) {
 	
 	// on login check if password is ok
 	socket.on('login', function(nick, pw){
-		db.list(function(err,data){
-			enterChat(nick, socket);
-			socket.emit('command', {
-				timestamp : timestamp(),
-				content : userList
-			})
-		});
+		
+		 db.get(nick, function(err, data) {
+			 enterChat(nick, socket);
+			 
+			 if(data){
+				 socket.emit('command', {timestamp : timestamp(), content : data});
+			 }
+		 });
+
 		
 	});
 	
