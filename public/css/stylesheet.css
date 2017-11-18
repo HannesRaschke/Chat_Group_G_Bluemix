@@ -31,7 +31,7 @@ button:hover {
 	margin-top: 13vh;
 }
 
-#userLogin {
+#userLogin{
 	display: flex;
 	justify-content: center;
 	align-items: center;
@@ -47,7 +47,7 @@ button:hover {
 }
 
 
-#LoginRegister,#registerForm {
+#LoginRegister ,#registerForm{
 	width: 280px;
 }
 

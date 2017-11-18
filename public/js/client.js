@@ -18,7 +18,7 @@ $(function() {
 	});
 	
 	$("#goToRegisterBtn").on("click",function() {
-		var register = '<form id="registerForm" action=""><label>Username</label><input id="desiredUsrname" type="text" placeholder="Enter Username" required><br><label>Password</label><input type="password" id="pw1" placeholder="Enter Password" required><br><label>Repeat Password</label><input id="pw2" type="password" placeholder="Repeat Password" required><br><input id="pic" type="file" accept="image/*"></input><br><button id="register">Register</button></form>';
+		var register = '<form id="registerForm" action=""><label>Username</label><input id="desiredUsrname" type="text" placeholder="Enter Username" required><br><label>Password</label><input type="password" id="pw1" placeholder="Enter Password" required><br><label>Repeat Password</label><input id="pw2" type="password" placeholder="Repeat Password" required><br><label>Select a profile picture</label><input id="pic" type="file" accept="image/*"></input><br><button id="register">Register</button></form>';
 	$("body").empty();
 	$("body").append(register);
 	
