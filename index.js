@@ -55,24 +55,36 @@ io.on('connection', function(socket) {
 			socket.emit('RegError', errmsg);
 			return
 		}else{
-			
-			db.insert({password: pw1, profilePicture: pic}, nick  , function(err,body,header){
-				if(err){
-					return console.log("[db.insert]",err.message);
+			db.get(nick, function(err, data) {
+				if(data){
+					var errmsg = "Username is already taken";
+					socket.emit('RegError', errmsg);	
+					return
+				}else{
+					var pass = new Buffer(pw1).toString('base64');
+					db.insert({password: pass, profilePicture: pic}, nick  , function(err,body,header){
+						if(err){
+							return console.log("[db.insert]",err.message);
+						}else{
+							enterChat(nick, socket);
+						}
+					});
 				}
 			});
 		}
-		enterChat(nick, socket);
+		
 	});
 	
 	// on login check if password is ok
 	socket.on('login', function(nick, pw){
 		
 		 db.get(nick, function(err, data) {
-			 enterChat(nick, socket);
-			 
-			 if(data){
-				 socket.emit('command', {timestamp : timestamp(), content : data});
+			 var pass = new Buffer(data.password,'base64').toString('ascii');
+			 if(pass===pw){
+				 enterChat(nick, socket);
+			 }else{
+				var errmsg = "Invalid Password or Username";
+				socket.emit('RegError', errmsg);
 			 }
 		 });
 

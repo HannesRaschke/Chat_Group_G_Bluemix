@@ -7,7 +7,8 @@
 $(function() {
 	var socket = io();
 	var nick; //the nickname of this user
-	var fileSelected //the file that will be sent with the next message
+	var fileSelected; //the file that will be sent with the next message
+	var profilePic;
 	// ////////////////
 	// username entered; button pressed
 	$("#enterUsername").submit(function() {
@@ -21,13 +22,14 @@ $(function() {
 		var register = '<form id="registerForm" action=""><label>Username</label><input id="desiredUsrname" type="text" placeholder="Enter Username" required><br><label>Password</label><input type="password" id="pw1" placeholder="Enter Password" required><br><label>Repeat Password</label><input id="pw2" type="password" placeholder="Repeat Password" required><br><label>Select a profile picture</label><input id="pic" type="file" accept="image/*"></input><br><button id="register">Register</button></form>';
 	$("body").empty();
 	$("body").append(register);
+	document.getElementById('pic').addEventListener('change',proFileChosen);
 	
 	$("#register").on("click", function(){
 		console.log("test");
 		nick = document.getElementById("desiredUsrname").value;
 		pw1 = document.getElementById("pw1").value;
 		pw2 = document.getElementById("pw2").value;
-		pic = document.getElementById("pic").value;
+		pic = profilePic
 		
 		socket.emit("registerClient",nick, pw1, pw2, pic);
 		return false;
@@ -103,7 +105,6 @@ $(function() {
 						$("body").append(chat);
 
 						document.getElementById('f').addEventListener('change',FileChosen);
-						
 						// ////////////////
 						// send chat message; button pressed // eventhandler
 						// only after "chat" is created
@@ -190,7 +191,14 @@ $(function() {
 	socket.on('invalidNick', function(data) {
 		alert("Enter a valid username\nOnly letters and numbers allowed");
 	});
-
+	
+	function proFileChosen(event){
+		if(event.target.files[0]===undefined || event.target.files[0].size>999999){
+			alert("please choose a file smaller than 1MB")
+		}else{
+			profilePic = event.target.files[0]
+		}
+	}
 	// onclick function for the file upload
 	function FileChosen(event) {
 		if(event.target.files[0]===undefined || event.target.files[0].size>999999){
