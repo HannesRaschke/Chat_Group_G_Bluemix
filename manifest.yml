@@ -3,5 +3,3 @@ applications:
 - name: cloudchat
   memory: 512M
   instances: 1
-  services: 
-  - CloudantDBCC
