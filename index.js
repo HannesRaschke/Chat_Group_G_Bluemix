@@ -22,12 +22,14 @@ if(fs.existsSync('./vcap-local.json')){
 	var vcapLocalJSON = JSON.stringify(vcapLocal);
 	console.log(vcapLocalJSON);
 }else if (process.env.VCAP_SERVICES) {
+	console.warn("CUSTOM INPUT: in vcap services");
     var env = JSON.parse(process.env.VCAP_SERVICES);
 }else{
 	console.err("No database credentials found");
 }
 
 var creds = vcapLocalJSON || env;
+console.warn(env);
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 
 var db = cloudant.db.use('users');
