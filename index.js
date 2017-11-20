@@ -13,8 +13,26 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
-var db;
-var dbConnection = false;
+
+////////////////////
+//cloudant
+
+if(fs.existsSync('./vcap-local.json')){
+	var vcapLocal = require('./vcap-local.json');
+	var vcapLocalJSON = JSON.stringify(vcapLocal);
+	console.log(vcapLocalJSON);
+}else if (process.env.VCAP_SERVICES) {
+    var env = JSON.parse(process.env.VCAP_SERVICES);
+}else{
+	console.err("No database credentials found");
+}
+
+var creds = vcapLocalJSON || env;
+var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
+
+var db = cloudant.db.use('users');
+//////////////////////
+
 
 var users = {};
 
@@ -34,12 +52,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
-	
-	if(dbConnection === false){
-	createDbConnection(db, function (callback){
-		db = callback;
-		dbConnection = true;});
-	}	
 	
 	// on register client check password and name
 	socket.on('registerClient', function(nick, pw1, pw2, pic){
@@ -302,28 +314,3 @@ function timestamp() {
 	return time;
 	// msg.timestamp = timestamp();
 }
-
-////////////////////
-//cloudant
-
-function createDbConnection(db, callback)
-{
-	console.log("create db");
-	if(fs.existsSync('./vcap-local.json')){
-		var vcapLocal = require('./vcap-local.json');
-		var vcapLocalJSON = JSON.stringify(vcapLocal);
-	}else if (process.env.VCAP_SERVICES) {
-		var env = JSON.parse(process.env.VCAP_SERVICES);
-	}else{
-		console.err("No database credentials found");
-	}
-	var creds = vcapLocalJSON || env;
-	console.warn (process.env.VCAP_SERVICES);
-	var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
-
-	var db = cloudant.db.use('users');
-	callback(db);
-}
-
-
-//////////////////////
