@@ -39,12 +39,13 @@ var db = cloudant.db.use('users');
 var vcap_services = JSON.parse(process.env.VCAP_SERVICES)
 var api_key = vcap_services.watson_vision_combined[0].credentials.api_key
 var url = vcap_services.watson_vision_combined[0].credentials.url
-var visual_recognition = new VisualRecognitionV3({
-    'api_key': api_key,
-    'version_date': '2016-05-20',
-    'url' : url,
-    'use_unauthenticated': false
-  });
+console.log("VR: "+api_key+", "+url)
+//var visual_recognition = new VisualRecognitionV3({
+//    'api_key': api_key,
+//    'version_date': '2016-05-20',
+//    'url' : url,
+//    'use_unauthenticated': false
+//  });
 
 //////////////////////
 
