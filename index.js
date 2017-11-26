@@ -13,7 +13,7 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
-//var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
+var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
 
 ////////////////////
 //cloudant
@@ -36,16 +36,16 @@ var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 var db = cloudant.db.use('users');
 //////////////////////
 //Visual recognition
-//var vcap_services = JSON.parse(process.env.VCAP_SERVICES)
-//var api_key = vcap_services.watson_vision_combined[0].credentials.api_key
-//var url = vcap_services.watson_vision_combined[0].credentials.url
-//console.log("VR: "+api_key+", "+url)
-//var visual_recognition = new VisualRecognitionV3({
-//    'api_key': api_key,
-//    'version_date': '2016-05-20',
-//    'url' : url,
-//    'use_unauthenticated': false
-//  });
+var vcap_services = JSON.parse(process.env.VCAP_SERVICES)
+var api_key = vcap_services.watson_vision_combined[0].credentials.api_key
+var url = vcap_services.watson_vision_combined[0].credentials.url
+console.log("VR: "+api_key+", "+url)
+var visual_recognition = new VisualRecognitionV3({
+    'api_key': api_key,
+    'version_date': '2016-05-20',
+    'url' : url,
+    'use_unauthenticated': false
+  });
 
 //////////////////////
 
@@ -94,14 +94,27 @@ io.on('connection', function(socket) {
 					socket.emit('RegError', errmsg);	
 					return
 				}else{
-					var pass = new Buffer(pw1).toString('base64');
-					db.insert({password: pass, profilePicture: pic}, nick  , function(err,body,header){
-						if(err){
-							return console.log("[db.insert]",err.message);
-						}else{
-							enterChat(nick, socket);
-						}
-					});
+				    visual_recognition.detectFaces({'image_file': pic}, function(err, res) {
+				        if (err){
+					        var errmsg = "there seems to be a problem with IBM Face Recognition, please try again later";
+					        socket.emit('RegError', errmsg);
+				        }else if(res.images[0].faces.length<=0){  
+				        	var errmsg = "Image must contain a face";
+					        socket.emit('RegError', errmsg);
+				        }else{
+				        	console.log("VR says: "+JSON.stringify(res))
+							var pass = new Buffer(pw1).toString('base64');
+							db.insert({password: pass, profilePicture: pic}, nick  , function(err,body,header){
+								if(err){
+									return console.log("[db.insert]",err.message);
+								}else{
+									enterChat(nick, socket);
+								}
+							});
+				        }
+				      });
+
+
 				}
 			});
 		}
