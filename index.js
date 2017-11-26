@@ -13,6 +13,7 @@ var path = require('path');
 var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
+var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
 
 ////////////////////
 //cloudant
@@ -33,6 +34,18 @@ var creds = vcapLocalJSON || envVCAP;
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 
 var db = cloudant.db.use('users');
+//////////////////////
+//Visual recognition
+var vcap_services = JSON.parse(process.env.VCAP_SERVICES)
+var api_key = vcap_services.watson_vision_combined[0].credentials.api_key
+var url = vcap_services.watson_vision_combined[0].credentials.url
+var visual_recognition = new VisualRecognitionV3({
+    'api_key': api_key,
+    'version_date': '2016-05-20',
+    'url' : url,
+    'use_unauthenticated': false
+  });
+
 //////////////////////
 
 
@@ -68,7 +81,12 @@ io.on('connection', function(socket) {
 			var errmsg = "Passwords do not match";
 			socket.emit('RegError', errmsg);
 			return
+//		}else if(pic===undefined||){//does the picture not contain a face?
+//			var errmsg = "Please select a picture with a face on it";
+//			socket.emit('RegError', errmsg);
+//			return
 		}else{
+			
 			db.get(nick, function(err, data) {
 				if(data){
 					var errmsg = "Username is already taken";
