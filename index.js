@@ -60,7 +60,12 @@ app.use(bodyParser.urlencoded({
 }));
 
 app.get('/', function(req, res) {
-	res.sendFile(__dirname + '/public/index.html');
+	if(req.secure){
+		res.sendFile(__dirname + '/public/index.html');
+	}else{
+		res.redirect('https://' + req.headers.host + req.url);
+	}
+	
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
