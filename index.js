@@ -58,13 +58,13 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended : true
 }));
-
+//if connection is not using https, redirect 
 app.get('/', function(req, res) {
-//	if(req.get('x-forwarded-proto')==='https'){
+	if(req.get('x-forwarded-proto')==='https'){
 		res.sendFile(__dirname + '/public/index.html');
-//	}else{
-//		res.redirect('https://' + req.headers.host + req.url);
-//	}
+	}else{
+		res.redirect('https://' + req.headers.host + req.url);
+	}
 	
 });
 
