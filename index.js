@@ -77,7 +77,6 @@ app.use(helmet.contentSecurityPolicy({
       defaultSrc: ["'self'", 'code.jquery.com'],
       styleSrc: ["'self'", 'cdn.socket.io']
     }
-setAllHeaders: true,
   }));
 
 // //////////////////////////////////////////////////////////////
