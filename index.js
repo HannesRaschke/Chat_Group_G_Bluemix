@@ -74,8 +74,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'", 'code.jquery.com'],
+      defaultSrc: ["'self'", 'code.jquery.com'],
       styleSrc: ["'self'", 'cdn.socket.io']
     }
 setAllHeaders: true,
