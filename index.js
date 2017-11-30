@@ -15,6 +15,7 @@ var request = require('request');
 var Cloudant = require('cloudant');
 var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
 var helmet = require('helmet');
+var bcrypt = require('bcrypt');
 
 
 ////////////////////
@@ -121,14 +122,15 @@ io.on('connection', function(socket) {
 					        socket.emit('RegError', errmsg);
 				        }else{
 				        	console.log("VR says: "+JSON.stringify(res))
-							var pass = new Buffer(pw1).toString('base64');
-							db.insert({password: pass, profilePicture: pic}, nick  , function(err,body,header){
-								if(err){
-									return console.log("[db.insert]",err.message);
-								}else{
-									enterChat(nick, socket);
-								}
-							});
+				        	bcrypt.hash(pw1, null, null, function(err, hash) {
+				        		db.insert({password: hash, profilePicture: pic}, nick  , function(err,body,header){
+				        			if(err){
+				        				return console.log("[db.insert]",err.message);
+				        			}else{
+				        				enterChat(nick, socket);
+				        			}
+				        		});
+				        	});
 				        }
 				      });
 
@@ -141,16 +143,24 @@ io.on('connection', function(socket) {
 	
 	// on login check if password is ok
 	socket.on('login', function(nick, pw){
-		
-		 db.get(nick, function(err, data) {
-			 var pass = new Buffer(data.password,'base64').toString('ascii');
-			 if(pass===pw){
-				 enterChat(nick, socket);
-			 }else{
-				var errmsg = "Invalid Password or Username";
-				socket.emit('RegError', errmsg);
-			 }
-		 });
+
+			db.get(nick, function(err, data) {
+				if(err){
+					var errmsg = "Invalid Password or Username";
+					socket.emit('RegError', errmsg);
+				}else{
+					bcrypt.compare(pw, data.password, function(err, res) {
+						if(res){
+							enterChat(nick, socket);
+						}else{
+							var errmsg = "Invalid Password or Username";
+							socket.emit('RegError', errmsg);
+						}
+					});
+
+				}
+			});
+		}
 
 		
 	});
