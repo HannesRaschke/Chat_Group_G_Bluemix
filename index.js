@@ -74,8 +74,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(helmet.contentSecurityPolicy({
     directives: {
-      defaultSrc: ["'self'", 'code.jquery.com'],
-      styleSrc: ["'self'", 'cdn.socket.io']
+      defaultSrc: ["'self'", 'https://code.jquery.com'],
+      styleSrc: ["'self'", 'https://cdn.socket.io']
     }
   }));
 
