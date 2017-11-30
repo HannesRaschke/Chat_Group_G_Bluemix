@@ -15,6 +15,24 @@ var request = require('request');
 var Cloudant = require('cloudant');
 var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
 
+//cors
+app.use(function(req, res, next) {
+	  res.header("Access-Control-Allow-Origin", "*");
+	  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+	  next();
+	});
+
+	app.get('/', function(req, res, next) {
+	  // Handle the get for this route
+	});
+
+	app.post('/', function(req, res, next) {
+	 // Handle the post for this route
+	});
+
+//
+
+
 ////////////////////
 //cloudant
 
@@ -27,7 +45,7 @@ if(fs.existsSync('./vcap-local.json')){
     var envVCAP= process.env.VCAP_SERVICES;
     console.warn(envVCAP);
 }else{
-	console.err("No database credentials found");
+	console.error("No database credentials found");
 }
 
 var creds = vcapLocalJSON || envVCAP;
