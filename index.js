@@ -72,6 +72,11 @@ app.get('/', function(req, res) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+//helmet  X-XSS
+//Sets "X-XSS-Protection: 1; mode=block".
+app.use(helmet.xssFilter())
+
+//helmet csp
 app.use(helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'", 'https://code.jquery.com'],
