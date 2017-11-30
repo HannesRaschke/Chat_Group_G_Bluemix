@@ -14,6 +14,7 @@ var fs = require('fs');
 var request = require('request');
 var Cloudant = require('cloudant');
 var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
+var helmet = require('helmet');
 
 
 ////////////////////
@@ -70,6 +71,12 @@ app.get('/', function(req, res) {
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(helmet.contentSecurityPolicy({
+	  directives: {
+	    defaultSrc: ["'self'"],
+	    styleSrc: ["'self'", 'cdn.socket.io', 'code.jquery.com']
+	  }
+	}))
 
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
