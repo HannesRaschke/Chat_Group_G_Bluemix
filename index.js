@@ -71,13 +71,13 @@ app.get('/', function(req, res) {
 });
 
 app.use(express.static(path.join(__dirname, 'public')));
-//app.use(helmet.contentSecurityPolicy({
-//	  directives: {
-//	    defaultSrc: ["'self'"],
-//	    script-src ["'self'", 'code.jquery.com'];
-//	    styleSrc: ["'self'", 'cdn.socket.io', 'code.jquery.com']
-//	  }
-//	}));
+
+app.use(helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", 'cdn.socket.io', 'code.jquery.com']
+    }
+  }));
 
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
