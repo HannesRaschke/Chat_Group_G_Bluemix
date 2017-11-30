@@ -18,8 +18,8 @@ var helmet = require('helmet');
 var bcrypt = require('bcrypt-nodejs');
 
 
-////////////////////
-//cloudant
+// //////////////////
+// cloudant
 
 if(fs.existsSync('./vcap-local.json')){
 	var vcapLocal = require('./vcap-local.json');
@@ -37,8 +37,8 @@ var creds = vcapLocalJSON || envVCAP;
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 
 var db = cloudant.db.use('users');
-//////////////////////
-//Visual recognition
+// ////////////////////
+// Visual recognition
 var vcap_services = JSON.parse(process.env.VCAP_SERVICES)
 var api_key = vcap_services.watson_vision_combined[0].credentials.api_key
 var url = vcap_services.watson_vision_combined[0].credentials.url
@@ -50,7 +50,7 @@ var visual_recognition = new VisualRecognitionV3({
     'use_unauthenticated': false
   });
 
-//////////////////////
+// ////////////////////
 
 
 var users = {};
@@ -61,7 +61,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
 	extended : true
 }));
-//if connection is not using https, redirect 
+// if connection is not using https, redirect
 app.get('/', function(req, res) {
 	if(req.get('x-forwarded-proto')==='https'){
 		res.sendFile(__dirname + '/public/index.html');
@@ -73,11 +73,11 @@ app.get('/', function(req, res) {
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-//helmet  X-XSS
-//Sets "X-XSS-Protection: 1; mode=block".
+// helmet X-XSS
+// Sets "X-XSS-Protection: 1; mode=block".
 app.use(helmet.xssFilter())
 
-//helmet csp
+// helmet csp
 app.use(helmet.contentSecurityPolicy({
     directives: {
       defaultSrc: ["'self'", 'https://code.jquery.com'],
@@ -92,19 +92,21 @@ io.on('connection', function(socket) {
 	socket.on('registerClient', function(nick, pw1, pw2, pic){
 		
 		
-		if (!(/^\w+$/.test(nick))){ //if the Nickname contains invalid characters
+		if (!(/^\w+$/.test(nick))){ // if the Nickname contains invalid
+									// characters
 			var errmsg = "Nick can only consist of numbers and letters";
 			socket.emit('RegError', errmsg);
 			return
 		}
-		else if(pw1!==pw2){//if the repeated password does not match the original one
+		else if(pw1!==pw2){// if the repeated password does not match the
+							// original one
 			var errmsg = "Passwords do not match";
 			socket.emit('RegError', errmsg);
 			return
-//		}else if(pic===undefined||){//does the picture not contain a face?
-//			var errmsg = "Please select a picture with a face on it";
-//			socket.emit('RegError', errmsg);
-//			return
+// }else if(pic===undefined||){//does the picture not contain a face?
+// var errmsg = "Please select a picture with a face on it";
+// socket.emit('RegError', errmsg);
+// return
 		}else{
 			
 			db.get(nick, function(err, data) {
@@ -160,7 +162,6 @@ io.on('connection', function(socket) {
 
 				}
 			});
-		}
 
 		
 	});
