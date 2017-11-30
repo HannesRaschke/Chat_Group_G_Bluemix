@@ -115,15 +115,16 @@ io.on('connection', function(socket) {
 					socket.emit('RegError', errmsg);	
 					return
 				}else{
-				    visual_recognition.detectFaces({'image_file': pic}, function(err, res) {
-				        if (err){
-					        var errmsg = "there seems to be a problem with IBM Face Recognition, please try again later";
-					        socket.emit('RegError', errmsg);
-				        }else if(res.images[0].faces.length<=0){  
-				        	var errmsg = "Image must contain a face";
-					        socket.emit('RegError', errmsg);
-				        }else{
-				        	console.log("VR says: "+JSON.stringify(res))
+					//Visual recognition(wich just chose to not work at random)
+//				    visual_recognition.detectFaces({'image_file': pic}, function(err, res) {
+//				        if (err){
+//					        var errmsg = "there seems to be a problem with IBM Face Recognition, please try again later";
+//					        socket.emit('RegError', errmsg);
+//				        }else if(res.images[0].faces.length<=0){  
+//				        	var errmsg = "Image must contain a face";
+//					        socket.emit('RegError', errmsg);
+//				        }else{
+//				        	console.log("VR says: "+JSON.stringify(res))
 				        	bcrypt.hash(pw1, null, null, function(err, hash) {
 				        		db.insert({password: hash, profilePicture: pic}, nick  , function(err,body,header){
 				        			if(err){
@@ -133,8 +134,9 @@ io.on('connection', function(socket) {
 				        			}
 				        		});
 				        	});
-				        }
-				      });
+				        	//Visual recognition(wich just chose to not work at random) pt2
+//				        }
+//				      });
 
 
 				}
