@@ -154,7 +154,7 @@ io.on('connection', function(socket) {
 					var errmsg = "Invalid Password or Username";
 					socket.emit('RegError', errmsg);
 				}else{
-					bcrypt.compare(pw+data.salt, data.password, function(err, res) {
+					bcrypt.compare(pw, data.password, function(err, res) {
 						if(res){
 							enterChat(nick, socket);
 						}else{
