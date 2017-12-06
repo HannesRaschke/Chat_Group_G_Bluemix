@@ -125,8 +125,9 @@ io.on('connection', function(socket) {
 					        socket.emit('RegError', errmsg);
 				        }else{
 				        	console.log("VR says: "+JSON.stringify(res))
-				        	bcrypt.hash(pw1, null, null, function(err, hash) {
-				        		db.insert({password: hash, profilePicture: pic}, nick  , function(err,body,header){
+				        	var salt = bcrypt.genSaltSync(); //generate the salt string
+				        	bcrypt.hash(pw1, salt, null, function(err, hash) {//hash the password and salt
+				        		db.insert({password: hash,salt: salt, profilePicture: pic}, nick  , function(err,body,header){
 				        			if(err){
 				        				return console.log("[db.insert]",err.message);
 				        			}else{
@@ -153,7 +154,7 @@ io.on('connection', function(socket) {
 					var errmsg = "Invalid Password or Username";
 					socket.emit('RegError', errmsg);
 				}else{
-					bcrypt.compare(pw, data.password, function(err, res) {
+					bcrypt.compare(pw+data.salt, data.password, function(err, res) {
 						if(res){
 							enterChat(nick, socket);
 						}else{
