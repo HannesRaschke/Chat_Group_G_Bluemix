@@ -9,7 +9,7 @@
     "helmet": "^3.9.0",
     "request": "^2.83.0",
     "socket.io": "^1.7.3",
-    "watson-developer-cloud": "^2.42.0"
+    "watson-developer-cloud": "^2.42.0",
     "redis": "*"
   },
   "scripts": {
