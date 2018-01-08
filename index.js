@@ -33,7 +33,7 @@ if(fs.existsSync('./vcap-local.json')){
     var envAPP = JSON.parse(process.env.VCAP_APPLICATION);
     console.warn(envAPP);
     console.warn("CUSTOM INPUT: in vcap app2");
-    var instanceID = envApp[instance_id];
+    var instanceID = envApp['instance_id'];
     console.warn(instanceID);
     console.warn("CUSTOM INPUT: in vcap services");
     var envVCAP= process.env.VCAP_SERVICES;
