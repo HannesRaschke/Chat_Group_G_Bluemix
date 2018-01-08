@@ -158,13 +158,13 @@ io.on('connection', function(socket) {
 				        			}else{
 				        				enterChat(nick, socket);
 				        			}
-				        	});
+				        		});
+				        	});				       
 				        }
-				      });
-
-
-				}
-			});
+//				      });
+//				}
+			}
+			);
 		}
 		
 	});
