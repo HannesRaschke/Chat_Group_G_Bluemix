@@ -16,6 +16,8 @@ var Cloudant = require('cloudant');
 var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
 var helmet = require('helmet');
 var bcrypt = require('bcrypt-nodejs');
+var cluster = require('cluster'); // Only required if you want the worker id
+var sticky = require('sticky-session');
 var instanceID;
 
 
@@ -394,9 +396,8 @@ function getMood(msg, callback){
 
 // ////////////////////////////////////////////////////////////////////
 
-http.listen(port, function() {
-	console.log('listening on *:' + port);
-});
+var server = http.createServer(app);
+sticky.listen(server,3000);
 
 function timestamp() {
 	var currentdate = new Date();
