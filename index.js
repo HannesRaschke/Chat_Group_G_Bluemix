@@ -42,7 +42,7 @@ var db = cloudant.db.use('users');
 var redisCredentials = JSON.parse(creds);
 console.warn("CUSTOM INPUT: redis");
 console.warn(redisCredentials);
-var redisCredentialsObject = redisCredentials['rediscloud']['credentials'];
+var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
 console.warn("CUSTOM INPUT: redis2");
 console.warn(redisCredentialsObject);
 
