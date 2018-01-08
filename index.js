@@ -40,7 +40,7 @@ var db = cloudant.db.use('users');
 ///////////
 // Redis
 var redisCredentials;
-redisCredentials = envVCAP['rediscloud'][0]['credentials'];
+redisCredentials = envVCAP['rediscloud']['credentials'];
 
 var redisClient = redis.createClient(credentials.port, credentials.host);
 if('password' in credentials) {
