@@ -18,8 +18,6 @@ var helmet = require('helmet');
 var bcrypt = require('bcrypt-nodejs');
 
 
-var envAPP;
-var instanceID;
 
 
 // //////////////////
@@ -30,11 +28,16 @@ if(fs.existsSync('./vcap-local.json')){
 	var vcapLocalJSON = JSON.stringify(vcapLocal);
 	console.log(vcapLocalJSON);
 }else if (process.env.VCAP_SERVICES) {
-	console.warn("CUSTOM INPUT: in vcap services");
+    
+    console.warn("CUSTOM INPUT: in vcap app1");
+    var envAPP = JSON.parse(process.env.VCAP_APPLICATION);
+    console.warn(envAPP);
+    console.warn("CUSTOM INPUT: in vcap app2");
+    var instanceID = envApp[instance_id];
+    console.warn(instanceID);
+    console.warn("CUSTOM INPUT: in vcap services");
     var envVCAP= process.env.VCAP_SERVICES;
-    envAPP = JSON.parse(process.env.VCAP_APPLICATION);
-    instanceID = envApp[instance_id];
-    console.warn(process.env);
+    console.warn(envVCAP);
 }else{
 	console.error("No database credentials found");
 }
@@ -118,11 +121,6 @@ app.use(helmet.contentSecurityPolicy({
 
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
-	
-
-	var errmsg = "envAPP " + envAPP;
-	socket.emit('RegError', errmsg);
-	
 	
 	// on register client check password and name
 	socket.on('registerClient', function(nick, pw1, pw2, pic){
