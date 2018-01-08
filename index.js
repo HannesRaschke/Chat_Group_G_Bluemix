@@ -43,8 +43,10 @@ var redisCredentials = JSON.parse(creds['rediscloud']);
 console.warn("CUSTOM INPUT: redis");
 console.warn(redisCredentials);
 var redisCredentialsObject = redisCredentials['credentials'];
+console.warn("CUSTOM INPUT: redis2");
+console.warn(redisCredentialsObject);
 
-var redisClient = redis.createClient(credentials.port, credentials.host);
+var redisClient = redis.createClient(redisCredentialsObject.port, redisCredentialsObject.host);
 if('password' in redisCredentialsObject) {
   redisClient.auth(redisCredentialsObject.password);
 }
