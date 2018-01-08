@@ -106,9 +106,9 @@ $(function() {
 									+ '">&#' + i + '</span>';
 						}
 						//here the log in screen gets replaced by the chat
-						var chat = '<div id="chatWrapper"><div id="onlineUserWidget"></div><div id="chatMainFrame"><ul id="messages"></ul><form id="chat" action=""><input type="submit" id="inputSubmit"><div id="smilies">'
+						var chat = '<div id="chatWrapper"><div id="onlineUserWidget"><p id="instance-id"">Instance ID: <span id="instance-id-value"></span></p></div><div id="chatMainFrame"><ul id="messages"></ul><form id="chat" action=""><input type="submit" id="inputSubmit"><div id="smilies">'
 								+ smilies
-								+ '</div><div id="dFileUpload"><input type="file" id="f" /><button id="bFileUpload">File attachment</button><div id="d"></div></div><input id="m" autocomplete="off" /><button id="bChat">Send</button><button id="bSmilies">&#128512</button></form></div><p id="instance-id"">Instance ID: <span id="instance-id-value"></span></p></div>';
+								+ '</div><div id="dFileUpload"><input type="file" id="f" /><button id="bFileUpload">File attachment</button><div id="d"></div></div><input id="m" autocomplete="off" /><button id="bChat">Send</button><button id="bSmilies">&#128512</button></form></div></div>';
 						$("body").empty();
 						$("body").append(chat);
 
