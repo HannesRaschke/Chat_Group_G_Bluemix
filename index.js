@@ -3,7 +3,7 @@
 //Hannes Raschke 751219
 //Group G
 //
-//var redis = require('redis');
+var redis = require('redis');
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
