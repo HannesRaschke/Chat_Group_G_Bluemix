@@ -34,6 +34,7 @@ if(fs.existsSync('./vcap-local.json')){
     console.warn(vcapAPPL);
     console.warn("CUSTOM INPUT: in vcap app2");
     var instanceID = vcapAPPL['instance_id'];
+    socket.emit('instanceID', instanceID);
     console.warn(instanceID);
     console.warn("CUSTOM INPUT: in vcap services");
     var envVCAP= process.env.VCAP_SERVICES;
@@ -412,4 +413,3 @@ function timestamp() {
 	return time;
 	// msg.timestamp = timestamp();
 }
-

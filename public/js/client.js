@@ -4,11 +4,19 @@
 //Group G
 //
 
+
 $(function() {
 	var socket = io();
 	var nick; //the nickname of this user
 	var fileSelected; //the file that will be sent with the next message
 	var profilePic;
+	
+	// //////////////
+	// instance id
+	socket.on('instanceID', function(instanceID){
+		$('#instance-id-value').html(instanceID);
+	});
+	
 	// ////////////////
 	// username entered; button pressed
 	$("#enterUsername").submit(function() {
