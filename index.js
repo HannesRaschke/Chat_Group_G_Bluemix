@@ -53,11 +53,6 @@ var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
 console.warn("CUSTOM INPUT: redis");
 console.warn(redisCredentialsObject);
 
-var redisClient = redis.createClient(redisCredentialsObject.port, redisCredentialsObject.hostname);
-if('password' in redisCredentialsObject) {
-  redisClient.auth(redisCredentialsObject.password);
-}
-
 var subscriber = redis.createClient(redisCredentialsObject.port, redisCredentialsObject.hostname);
 subscriber.on("error", function(err) {
   console.error('There was an error with the redis client ' + err);
