@@ -149,9 +149,11 @@ io.on('connection', function(socket) {
 //				        	var errmsg = "Image must contain a face";
 //					        socket.emit('RegError', errmsg);
 //				        }else{
+					var errmsg = "VR says: "+JSON.stringify(res);
+			        socket.emit('RegError', errmsg);
 				        	console.log("VR says: "+JSON.stringify(res))
-				        	var salt = bcrypt.genSaltSync(); //generate the salt string
-				        	bcrypt.hash(pw1, salt, null, function(err, hash) {//hash the password and salt
+//				        	var salt = bcrypt.genSaltSync(); //generate the salt string
+//				        	bcrypt.hash(pw1, salt, null, function(err, hash) {//hash the password and salt
 				        		db.insert({password: hash,salt: salt, profilePicture: pic}, nick  , function(err,body,header){
 				        			if(err){
 				        				return console.log("[db.insert]",err.message);
@@ -159,7 +161,7 @@ io.on('connection', function(socket) {
 				        				enterChat(nick, socket);
 				        			}
 				        		});
-				        	});				       
+//				        	});				       
 				        }
 //				      });
 //				}
