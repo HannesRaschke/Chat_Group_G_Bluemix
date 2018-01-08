@@ -1,8 +1,8 @@
 ---
 applications:
 - name: cloudchat
-  memory: 512M
-  instances: 1
+  memory: 128M
+  instances: 3
   services: 
   - CloudantDBCC
   - Visual Recognition-df

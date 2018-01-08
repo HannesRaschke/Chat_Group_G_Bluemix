@@ -3,7 +3,7 @@
 //Hannes Raschke 751219
 //Group G
 //
-
+var redis = require('redis');
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -19,7 +19,7 @@ var bcrypt = require('bcrypt-nodejs');
 
 
 // //////////////////
-// cloudant
+// cloudant // vcap services
 
 if(fs.existsSync('./vcap-local.json')){
 	var vcapLocal = require('./vcap-local.json');
@@ -35,8 +35,31 @@ if(fs.existsSync('./vcap-local.json')){
 
 var creds = vcapLocalJSON || envVCAP;
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
-
 var db = cloudant.db.use('users');
+
+///////////
+// Redis
+var redisCredentials;
+redisCredentials = envVCAP['rediscloud'][0]['credentials'];
+
+var redisClient = redis.createClient(credentials.port, credentials.host);
+if('password' in credentials) {
+  redisClient.auth(credentials.password);
+}
+
+var subscriber = redis.createClient(credentials.port, credentials.hostname);
+subscriber.on("error", function(err) {
+  console.error('There was an error with the redis client ' + err);
+});
+var publisher = redis.createClient(credentials.port, credentials.hostname);
+publisher.on("error", function(err) {
+  console.error('There was an error with the redis client ' + err);
+});
+if (redisCredentials.password != '') {
+  subscriber.auth(redisCredentials.password);
+  publisher.auth(redisCredentials.password);
+}
+
 // ////////////////////
 // Visual recognition
 var vcap_services = JSON.parse(process.env.VCAP_SERVICES)
@@ -380,3 +403,4 @@ function timestamp() {
 	return time;
 	// msg.timestamp = timestamp();
 }
+

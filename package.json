@@ -10,6 +10,7 @@
     "request": "^2.83.0",
     "socket.io": "^1.7.3",
     "watson-developer-cloud": "^2.42.0"
+    "redis": "*"
   },
   "scripts": {
     "start": "node index.js"
