@@ -141,23 +141,19 @@ io.on('connection', function(socket) {
 					return
 				}else{
 					//Visual recognition
-				    visual_recognition.detectFaces({'image_file': pic}, function(err, res) {
-				        if (err){
-					        var errmsg = "there seems to be a problem with IBM Face Recognition, please try again later";
-					        socket.emit('RegError', errmsg);
-				        }else if(res.images[0].faces.length<=0){  
-				        	var errmsg = "Image must contain a face";
-					        socket.emit('RegError', errmsg);
-				        }else{
+//				   visual_recognition.detectFaces({'image_file': pic}, function(err, res) {
+//				       if (err){
+//					        var errmsg = "there seems to be a problem with IBM Face Recognition, please try again later";
+//					        socket.emit('RegError', errmsg);
+//				        }else if(res.images[0].faces.length<=0){  
+//				        	var errmsg = "Image must contain a face";
+//					        socket.emit('RegError', errmsg);
+//				        }else{
 				        	console.log("VR says: "+JSON.stringify(res))
-				        		var errmsg = "Before Salt";
-								        socket.emit('RegError', errmsg);
 				        	var salt = bcrypt.genSaltSync(); //generate the salt string
 				        	bcrypt.hash(pw1, salt, null, function(err, hash) {//hash the password and salt
 				        		db.insert({password: hash,salt: salt, profilePicture: pic}, nick  , function(err,body,header){
 				        			if(err){
-				        				var errmsg = "After Salt";
-								        socket.emit('RegError', errmsg);
 				        				return console.log("[db.insert]",err.message);
 				        			}else{
 				        				enterChat(nick, socket);
