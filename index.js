@@ -161,6 +161,7 @@ io.on('connection', function(socket) {
 				        				return console.log("[db.insert]",err.message);
 				        			}else{
 				        				enterChat(nick, socket);
+//				        				subscriber.subscribe(nick);
 				        			}
 				        		});
 				        	});				       
@@ -184,6 +185,7 @@ io.on('connection', function(socket) {
 					bcrypt.compare(pw, data.password, function(err, res) {
 						if(res){
 							enterChat(nick, socket);
+							socket.emit('instanceID', instanceID);
 						}else{
 							var errmsg = "Invalid Password or Username";
 							socket.emit('RegError', errmsg);
