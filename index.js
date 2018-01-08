@@ -39,10 +39,10 @@ var db = cloudant.db.use('users');
 
 ///////////
 // Redis
-var redisCredentials = JSON.parse(creds);
+var redisCredentials = JSON.parse(creds['rediscloud']);
 console.warn("CUSTOM INPUT: redis");
 console.warn(redisCredentials);
-var redisCredentialsObject = redisCredentials['rediscloud']['credentials'];
+var redisCredentialsObject = redisCredentials['credentials'];
 
 var redisClient = redis.createClient(credentials.port, credentials.host);
 if('password' in redisCredentialsObject) {
