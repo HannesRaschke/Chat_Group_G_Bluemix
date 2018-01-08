@@ -39,25 +39,27 @@ var db = cloudant.db.use('users');
 
 ///////////
 // Redis
-var redisCredentials;
-redisCredentials = envVCAP['rediscloud']['credentials'];
+var redisCredentials = JSON.parse(creds);
+console.warn("CUSTOM INPUT: redis");
+console.warn(redisCredentials);
+var redisCredentialsObject = redisCredentials['rediscloud']['credentials'];
 
 var redisClient = redis.createClient(credentials.port, credentials.host);
-if('password' in credentials) {
-  redisClient.auth(credentials.password);
+if('password' in redisCredentialsObject) {
+  redisClient.auth(redisCredentialsObject.password);
 }
 
-var subscriber = redis.createClient(credentials.port, credentials.hostname);
+var subscriber = redis.createClient(redisCredentialsObject.port, redisCredentialsObject.hostname);
 subscriber.on("error", function(err) {
   console.error('There was an error with the redis client ' + err);
 });
-var publisher = redis.createClient(credentials.port, credentials.hostname);
+var publisher = redis.createClient(redisCredentialsObject.port, redisCredentialsObject.hostname);
 publisher.on("error", function(err) {
   console.error('There was an error with the redis client ' + err);
 });
-if (redisCredentials.password != '') {
-  subscriber.auth(redisCredentials.password);
-  publisher.auth(redisCredentials.password);
+if (redisCredentialsObject.password != '') {
+  subscriber.auth(redisCredentialsObject.password);
+  publisher.auth(redisCredentialsObject.password);
 }
 
 // ////////////////////
