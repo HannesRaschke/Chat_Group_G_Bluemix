@@ -16,7 +16,7 @@ var Cloudant = require('cloudant');
 var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
 var helmet = require('helmet');
 var bcrypt = require('bcrypt-nodejs');
-
+var instanceID;
 
 
 
@@ -33,8 +33,7 @@ if(fs.existsSync('./vcap-local.json')){
     var vcapAPPL = JSON.parse(process.env.VCAP_APPLICATION);
     console.warn(vcapAPPL);
     console.warn("CUSTOM INPUT: in vcap app2");
-    var instanceID = vcapAPPL['instance_id'];
-    socket.emit('instanceID', instanceID);
+    instanceID = vcapAPPL['instance_id'];
     console.warn(instanceID);
     console.warn("CUSTOM INPUT: in vcap services");
     var envVCAP= process.env.VCAP_SERVICES;
@@ -122,7 +121,7 @@ app.use(helmet.contentSecurityPolicy({
 
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
-	
+	socket.emit('instanceID', instanceID);
 	// on register client check password and name
 	socket.on('registerClient', function(nick, pw1, pw2, pic){
 		
