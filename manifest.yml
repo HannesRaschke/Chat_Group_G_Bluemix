@@ -6,3 +6,4 @@ applications:
   services: 
   - CloudantDBCC
   - Visual Recognition-df
+  - RedisCloudChat
