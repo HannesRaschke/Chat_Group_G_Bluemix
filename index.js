@@ -18,6 +18,10 @@ var helmet = require('helmet');
 var bcrypt = require('bcrypt-nodejs');
 
 
+var envAPP;
+var instanceID;
+
+
 // //////////////////
 // cloudant // vcap services
 
@@ -28,6 +32,8 @@ if(fs.existsSync('./vcap-local.json')){
 }else if (process.env.VCAP_SERVICES) {
 	console.warn("CUSTOM INPUT: in vcap services");
     var envVCAP= process.env.VCAP_SERVICES;
+    envAPP = JSON.parse(process.env.VCAP_APPLICATION);
+    instanceID = envApp[instance_id];
     console.warn(process.env);
 }else{
 	console.error("No database credentials found");
@@ -112,6 +118,11 @@ app.use(helmet.contentSecurityPolicy({
 
 // //////////////////////////////////////////////////////////////
 io.on('connection', function(socket) {
+	
+
+	var errmsg = "envAPP " + envAPP;
+	socket.emit('RegError', errmsg);
+	
 	
 	// on register client check password and name
 	socket.on('registerClient', function(nick, pw1, pw2, pic){
