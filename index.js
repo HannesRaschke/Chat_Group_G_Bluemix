@@ -31,15 +31,15 @@ if(fs.existsSync('./vcap-local.json')){
 	console.log(vcapLocalJSON);
 }else if (process.env.VCAP_SERVICES) {
     
-    console.warn("CUSTOM INPUT: in vcap app1");
+//    console.warn("CUSTOM INPUT: in vcap app1");
     var vcapAPPL = JSON.parse(process.env.VCAP_APPLICATION);
-    console.warn(vcapAPPL);
-    console.warn("CUSTOM INPUT: in vcap app2");
+//    console.warn(vcapAPPL);
+//    console.warn("CUSTOM INPUT: in vcap app2");
     instanceID = vcapAPPL['instance_id'];
-    console.warn(instanceID);
-    console.warn("CUSTOM INPUT: in vcap services");
+//    console.warn(instanceID);
+//    console.warn("CUSTOM INPUT: in vcap services");
     var envVCAP= process.env.VCAP_SERVICES;
-    console.warn(envVCAP);
+//    console.warn(envVCAP);
 }else{
 	console.error("No database credentials found");
 }
@@ -52,8 +52,8 @@ var db = cloudant.db.use('users');
 // Redis
 var redisCredentials = JSON.parse(creds);
 var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
-console.warn("CUSTOM INPUT: redis");
-console.warn(redisCredentialsObject);
+//console.warn("CUSTOM INPUT: redis");
+//console.warn(redisCredentialsObject);
 
 var subscriber = redis.createClient(redisCredentialsObject.port, redisCredentialsObject.hostname);
 subscriber.on("error", function(err) {
