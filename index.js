@@ -396,8 +396,9 @@ function getMood(msg, callback){
 
 // ////////////////////////////////////////////////////////////////////
 
-var server = http.createServer(app);
-sticky.listen(server,3000);
+http.listen(port, function() {
+	console.log('listening on *:' + port);
+});
 
 function timestamp() {
 	var currentdate = new Date();
