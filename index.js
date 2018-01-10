@@ -246,7 +246,6 @@ io.on('connection', function(socket) {
 				timestamp : timestamp(),
 				content : message
 			})
-
 		}
 	});
 
@@ -281,7 +280,7 @@ io.on('connection', function(socket) {
 
 	// on disconnect delete user data and send "user disconnected" message
 	socket.on('disconnect', function() {
-		if(socket.nickname==undefined){
+		if(socket.nickname in users))){
 		io.emit('system message', {
 			action : " left",
 			timestamp : timestamp(),
