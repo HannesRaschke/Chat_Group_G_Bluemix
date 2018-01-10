@@ -281,7 +281,7 @@ io.on('connection', function(socket) {
 
 	// on disconnect delete user data and send "user disconnected" message
 	socket.on('disconnect', function() {
-		if(!socket.nickname==null){
+		if(socket.nickname==undefined){
 		io.emit('system message', {
 			action : " left",
 			timestamp : timestamp(),
