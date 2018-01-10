@@ -186,9 +186,7 @@ io.on('connection', function(socket) {
 					});
 
 				}
-			});
-
-		
+			});		
 	});
 	
 	
@@ -198,6 +196,7 @@ io.on('connection', function(socket) {
 		var moods = getMood(msg.content, function(mood){
 			msg.timestamp = timestamp();
 			msg.userMood = mood;
+//			pub.publish("chat", msg)
 			io.emit('chat message', msg);
 		});
 	});
@@ -354,17 +353,26 @@ function enterChat(nick, socket) {
 			users[nick] = socket.id;
 			socket.emit('enter', nick);
 			// Save nickname on socket
-			socket.nickname = nick;
+ 			socket.nickname = nick;
 			io.emit('system message', {
 				action : " joined",
 				timestamp : timestamp(),
 				user : socket.nickname
 			});
+			pub.publish('join', socket.nickname )
 			var OnlineUser = Object.keys(users);
 			io.emit('OnlineUserWidget', {
 				content : OnlineUser
 			});
 }
+
+sub.on("join", function (join, socket.nickname) {
+	io.emit('system message', {
+		action : " joined",
+		timestamp : timestamp(),
+		user : socket.nickname
+	});
+});
 
 // /////////////////////////////////////////////////////////////////////
 // let tone analyzer get the senders mood
