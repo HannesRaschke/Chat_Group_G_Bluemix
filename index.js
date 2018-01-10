@@ -281,6 +281,7 @@ io.on('connection', function(socket) {
 
 	// on disconnect delete user data and send "user disconnected" message
 	socket.on('disconnect', function() {
+		if(!socket.nickname==0){
 		io.emit('system message', {
 			action : " left",
 			timestamp : timestamp(),
@@ -291,7 +292,7 @@ io.on('connection', function(socket) {
 		io.emit('OnlineUserWidget', {
 			content : OnlineUser
 		});
-	});
+	}});
 
 	// gets a file object and uses an fs stream to write it to a file. Then
 	// sends the file as a file message to all users
