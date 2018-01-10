@@ -21,7 +21,7 @@ var sticky = require('sticky-session');
 var instanceID;
 
 
-if (!sticky.listen(server, port)) {
+if (!sticky.listen(http, port)) {
 // //////////////////
 // cloudant // vcap services
 
@@ -415,6 +415,6 @@ function timestamp() {
 	// msg.timestamp = timestamp();
 }
 server.once('listening', function() {
-	console.log('server started on 3000 port');
+//	console.log('server started on 3000 port');
 });
 }
