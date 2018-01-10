@@ -50,13 +50,11 @@ var db = cloudant.db.use('users');
 
 ///////////
 // Redis
-//var redisCredentials = JSON.parse(creds);
-//var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
-//
-//
-//var pub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
-//var sub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
-//io.adapter(adapter({ pubClient: pub, subClient: sub }));
+var redisCredentials = JSON.parse(creds);
+var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
+var pub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
+var sub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
+io.adapter(adapter({ pubClient: pub, subClient: sub }));
 
 
 // ////////////////////
