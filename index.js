@@ -359,7 +359,7 @@ function enterChat(nick, socket) {
 				timestamp : timestamp(),
 				user : socket.nickname
 			});
-			pub.publish('join', nick )
+			pub.publish('join', nick );
 			var OnlineUser = Object.keys(users);
 			io.emit('OnlineUserWidget', {
 				content : OnlineUser
