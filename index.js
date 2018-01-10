@@ -414,7 +414,7 @@ function timestamp() {
 	return time;
 	// msg.timestamp = timestamp();
 }
-server.once('listening', function() {
+http.once('listening', function() {
 //	console.log('server started on 3000 port');
 });
 }
