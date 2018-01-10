@@ -359,20 +359,11 @@ function enterChat(nick, socket) {
 				timestamp : timestamp(),
 				user : socket.nickname
 			});
-			pub.publish('join', nick );
 			var OnlineUser = Object.keys(users);
 			io.emit('OnlineUserWidget', {
 				content : OnlineUser
 			});
 }
-
-sub.on("join", function (join, nick) {
-	io.emit('system message', {
-		action : " joined",
-		timestamp : timestamp(),
-		user : socket.nickname
-	});
-});
 
 // /////////////////////////////////////////////////////////////////////
 // let tone analyzer get the senders mood
