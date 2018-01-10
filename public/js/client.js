@@ -6,8 +6,8 @@
 
 
 $(function() {
-	var socket = io();
-//	var socket = io({transports: ['websocket'], upgrade: false});
+//	var socket = io();
+	var socket = io({transports: ['websocket'], upgrade: false});
 	var nick; //the nickname of this user
 	var fileSelected; //the file that will be sent with the next message
 	var profilePic;

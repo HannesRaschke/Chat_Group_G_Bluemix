@@ -10,7 +10,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-//io.set('transports', ['websocket']);
+io.set('transports', ['websocket']);
 var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
 var path = require('path');
 var fs = require('fs');
@@ -50,13 +50,13 @@ var db = cloudant.db.use('users');
 
 ///////////
 // Redis
-var redisCredentials = JSON.parse(creds);
-var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
-
-
-var pub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
-var sub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
-io.adapter(adapter({ pubClient: pub, subClient: sub }));
+//var redisCredentials = JSON.parse(creds);
+//var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
+//
+//
+//var pub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
+//var sub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
+//io.adapter(adapter({ pubClient: pub, subClient: sub }));
 
 
 // ////////////////////
@@ -154,7 +154,6 @@ io.on('connection', function(socket) {
 				        				return console.log("[db.insert]",err.message);
 				        			}else{
 				        				enterChat(nick, socket);
-//				        				subscriber.subscribe(nick);
 				        			}
 				        		});
 				        	});				       
