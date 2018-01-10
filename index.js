@@ -401,7 +401,7 @@ function getMood(msg, callback){
 //});
 //
 //var server = http.createServer(app);
-sticky.listen(http,3000);
+sticky.listen(http,port);
 	
 
 function timestamp() {
