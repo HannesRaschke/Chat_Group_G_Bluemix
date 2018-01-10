@@ -8,6 +8,7 @@ var express = require('express');
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
+io.set('transports', ['websocket']);
 var port = process.env.PORT || process.env.VCAP_APP_PORT || 3000;
 var path = require('path');
 var fs = require('fs');
@@ -21,7 +22,6 @@ var sticky = require('sticky-session');
 var instanceID;
 
 
-if (!sticky.listen(http, port)) {
 // //////////////////
 // cloudant // vcap services
 
@@ -396,9 +396,9 @@ function getMood(msg, callback){
 
 // ////////////////////////////////////////////////////////////////////
 
-//http.listen(port, function() {
-//	console.log('listening on *:' + port);
-//});
+http.listen(port, function() {
+	console.log('listening on *:' + port);
+});
 //
 //var server = http.createServer(app);
 	
@@ -413,8 +413,4 @@ function timestamp() {
 			+ currentdate.getSeconds() + "] ";
 	return time;
 	// msg.timestamp = timestamp();
-}
-http.once('listening', function() {
-//	console.log('server started on 3000 port');
-});
 }
