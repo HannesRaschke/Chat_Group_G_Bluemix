@@ -3,7 +3,9 @@
 //Hannes Raschke 751219
 //Group G
 //
-var redis = require('redis');
+
+var redis = require('redis').createClient;
+var adapter = require('socket.io-redis');
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -17,8 +19,6 @@ var Cloudant = require('cloudant');
 var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3');
 var helmet = require('helmet');
 var bcrypt = require('bcrypt-nodejs');
-var cluster = require('cluster'); // Only required if you want the worker id
-var sticky = require('sticky-session');
 var instanceID;
 
 
@@ -52,21 +52,12 @@ var db = cloudant.db.use('users');
 // Redis
 var redisCredentials = JSON.parse(creds);
 var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
-//console.warn("CUSTOM INPUT: redis");
-//console.warn(redisCredentialsObject);
 
-var subscriber = redis.createClient(redisCredentialsObject.port, redisCredentialsObject.hostname);
-subscriber.on("error", function(err) {
-  console.error('There was an error with the redis client ' + err);
-});
-var publisher = redis.createClient(redisCredentialsObject.port, redisCredentialsObject.hostname);
-publisher.on("error", function(err) {
-  console.error('There was an error with the redis client ' + err);
-});
-if (redisCredentialsObject.password != '') {
-  subscriber.auth(redisCredentialsObject.password);
-  publisher.auth(redisCredentialsObject.password);
-}
+
+var pub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
+var sub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
+io.adapter(adapter({ pubClient: pub, subClient: sub }));
+
 
 // ////////////////////
 // Visual recognition
