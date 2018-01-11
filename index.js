@@ -153,7 +153,7 @@ io.on('connection', function(socket) {
 				        				return console.log("[db.insert]",err.message);
 				        			}else{
 				        				enterChat(nick, socket);
-				        				dbOnlineUser.insert({username: nick}, nick  , function(err,body,header){
+				        				dbOnlineuser.insert({username: nick}, nick  , function(err,body,header){
 				        					if(err){
 						        				return console.log("[db.insert]",err.message);
 						        			}});
