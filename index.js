@@ -156,7 +156,7 @@ io.on('connection', function(socket) {
 				        				dbOnlineUser.insert({username: nick}, nick  , function(err,body,header){
 						        			if(err){
 						        				return console.log("[db.insert]",err.message);
-						        			}
+						        			})
 				        			}
 				        		});
 				        	});				       
