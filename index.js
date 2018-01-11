@@ -60,11 +60,11 @@ var db = cloudant.db.use('users');
 ////////////
 // pub nub
 
-var pubnub_setup = new PubNub({
+var pubnub_setup = {
 	    channel       : 'ChatEnt',
 	    publish_key   : 'pub-c-dc8fdcbb-e363-4246-95b8-2494f089be96',
 	    subscribe_key : 'sub-c-ac21f8a6-f6cb-11e7-a7db-e6c6e9cd0a3f'
-	});
+	};
 
 // ////////////////////
 // Visual recognition
@@ -115,6 +115,7 @@ app.use(helmet.contentSecurityPolicy({
   }));
 
 // //////////////////////////////////////////////////////////////
+pubnub.addListener({ 
 io.on('connection', function(socket) {
 	socket.emit('instanceID', instanceID);
 	// on register client check password and name
@@ -372,6 +373,7 @@ function enterChat(nick, socket) {
 				content : OnlineUser
 			});
 }
+});
 
 // /////////////////////////////////////////////////////////////////////
 // let tone analyzer get the senders mood
