@@ -20,6 +20,7 @@ var VisualRecognitionV3 = require('watson-developer-cloud/visual-recognition/v3'
 var helmet = require('helmet');
 var bcrypt = require('bcrypt-nodejs');
 var instanceID;
+var PubNub = require('pubnub');
 
 
 // //////////////////
@@ -59,11 +60,11 @@ var db = cloudant.db.use('users');
 ////////////
 // pub nub
 
-var pubnub_setup = {
+var pubnub_setup = new PubNub({
 	    channel       : 'ChatEnt',
 	    publish_key   : 'pub-c-dc8fdcbb-e363-4246-95b8-2494f089be96',
 	    subscribe_key : 'sub-c-ac21f8a6-f6cb-11e7-a7db-e6c6e9cd0a3f'
-	};
+	});
 
 // ////////////////////
 // Visual recognition
