@@ -154,9 +154,9 @@ io.on('connection', function(socket) {
 				        			}else{
 				        				enterChat(nick, socket);
 				        				dbOnlineUser.insert({username: nick}, nick  , function(err,body,header){
-						        			if(err){
+				        					if(err){
 						        				return console.log("[db.insert]",err.message);
-						        			})
+						        			}});
 				        			}
 				        		});
 				        	});				       
