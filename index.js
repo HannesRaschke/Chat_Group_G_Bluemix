@@ -362,7 +362,7 @@ function enterChat(nick, socket) {
 			
 			// connects the user to their socket id
 			//users[nick] = socket.id;
-			io.of('/').adapter.customRequest({nick: nick socketId:socket.id}, function(err, replies){
+			io.of('/').adapter.customRequest({nick: nick, socketId:socket.id}, function(err, replies){
 				
 				});
 			socket.emit('enter', nick);
