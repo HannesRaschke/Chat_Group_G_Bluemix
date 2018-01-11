@@ -47,7 +47,7 @@ if(fs.existsSync('./vcap-local.json')){
 var creds = vcapLocalJSON || envVCAP;
 var cloudant = Cloudant({vcapServices: JSON.parse(creds)});
 var db = cloudant.db.use('users');
-var dbOnlineUser = cloudant.db.use('onlineUser');
+var dbOnlineUser = cloudant.db.use('onlineuser');
 
 ///////////
 // Redis
@@ -156,6 +156,7 @@ io.on('connection', function(socket) {
 				        				dbOnlineUser.insert({username: nick}, nick  , function(err,body,header){
 						        			if(err){
 						        				return console.log("[db.insert]",err.message);
+						        			}
 				        			}
 				        		});
 				        	});				       
