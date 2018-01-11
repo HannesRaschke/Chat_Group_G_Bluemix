@@ -4,8 +4,8 @@
 //Group G
 //
 
-var redis = require('redis').createClient;
-var adapter = require('socket.io-redis');
+//var redis = require('redis').createClient;
+//var adapter = require('socket.io-redis');
 var express = require('express');
 var app = express();
 var http = require('http').Server(app);
@@ -50,12 +50,20 @@ var db = cloudant.db.use('users');
 
 ///////////
 // Redis
-var redisCredentials = JSON.parse(creds);
-var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
-var pub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
-var sub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
-io.adapter(adapter({ pubClient: pub, subClient: sub }));
+//var redisCredentials = JSON.parse(creds);
+//var redisCredentialsObject = redisCredentials['rediscloud'][0]['credentials'];
+//var pub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
+//var sub = redis(redisCredentialsObject.port, redisCredentialsObject.hostname, { auth_pass: redisCredentialsObject.password });
+//io.adapter(adapter({ pubClient: pub, subClient: sub }));
 
+////////////
+// pub nub
+
+var pubnub_setup = {
+	    channel       : 'ChatEnt',
+	    publish_key   : 'pub-c-dc8fdcbb-e363-4246-95b8-2494f089be96',
+	    subscribe_key : 'sub-c-ac21f8a6-f6cb-11e7-a7db-e6c6e9cd0a3f'
+	};
 
 // ////////////////////
 // Visual recognition
