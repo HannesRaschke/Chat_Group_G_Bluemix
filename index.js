@@ -291,11 +291,14 @@ io.on('connection', function(socket) {
 			timestamp : timestamp(),
 			user : socket.nickname
 		});
-		delete users[socket.nickname];
-		var OnlineUser = Object.keys(users);
-		io.emit('OnlineUserWidget', {
-			content : OnlineUser
+		io.of('/').adapter.customRequest({nick: socket.nickname, socketId:socket.id, intent:"leave"}, function(err, replies){
+			var OnlineUser = Object.keys(users);
+			io.emit('OnlineUserWidget', {
+				content : OnlineUser
+			});	
 		});
+
+		
 		}
 		});
 
@@ -352,8 +355,12 @@ io.on('connection', function(socket) {
 //add users to users
 
 io.of('/').adapter.customHook = (data, cb) => {
-	users[data.nick] = data.socketId;
+	if(data.intent.equals("join")){
+		users[data.nick] = data.socketId;
+	}else{
+		delete users[data.nick];
 	}
+}
 
 
 // /////////////////////////////////////////////////////////////////////
@@ -362,9 +369,12 @@ function enterChat(nick, socket) {
 			
 			// connects the user to their socket id
 			//users[nick] = socket.id;
-			io.of('/').adapter.customRequest({nick: nick, socketId:socket.id}, function(err, replies){
-				
+			io.of('/').adapter.customRequest({nick: nick, socketId:socket.id, intent:"join"}, function(err, replies){
+				var OnlineUser = Object.keys(users);
+				io.emit('OnlineUserWidget', {
+					content : OnlineUser
 				});
+			});
 			socket.emit('enter', nick);
 			// Save nickname on socket
 			socket.nickname = nick;
@@ -373,10 +383,7 @@ function enterChat(nick, socket) {
 				timestamp : timestamp(),
 				user : socket.nickname
 			});
-			var OnlineUser = Object.keys(users);
-			io.emit('OnlineUserWidget', {
-				content : OnlineUser
-			});
+			
 }
 
 // /////////////////////////////////////////////////////////////////////
