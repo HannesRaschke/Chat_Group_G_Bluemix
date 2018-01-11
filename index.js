@@ -179,7 +179,7 @@ io.on('connection', function(socket) {
 				}else{
 					bcrypt.compare(pw, data.password, function(err, res) {
 						if(res){
-							if(nick in users){
+							if(!(nick in users)){
 								enterChat(nick, socket);
 								socket.emit('instanceID', instanceID);
 							}else{
