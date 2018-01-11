@@ -184,7 +184,7 @@ io.on('connection', function(socket) {
 								socket.emit('instanceID', instanceID);
 							}else{
 								var errmsg = "This User is already logged in";
-								socket.emit('RegError', users);
+								socket.emit('RegError', errmsg);
 							}
 						}else{
 							var errmsg = "Invalid Password or Username";
