@@ -355,11 +355,11 @@ io.on('connection', function(socket) {
 //add users to users
 
 io.of('/').adapter.customHook = (data, cb) => {
-	if(data.intent.equals("join")){
+	//if(data.intent.equals("join")){
 		users[data.nick] = data.socketId;
-	}else{
-		delete users[data.nick];
-	}
+	//}else{
+	//	delete users[data.nick];
+	//}
 }
 
 
