@@ -348,13 +348,23 @@ io.on('connection', function(socket) {
 
 	});
 });
+//////////////////////////////////////////////////////////////////////
+//add users to users
+
+io.of('/').adapter.customHook = (data, cb) => {
+	users[data.nick] = data.socketId;
+	}
+
 
 // /////////////////////////////////////////////////////////////////////
 
 function enterChat(nick, socket) {
 			
 			// connects the user to their socket id
-			users[nick] = socket.id;
+			//users[nick] = socket.id;
+			io.of('/').adapter.customRequest({nick: nick socketId:socket.id}, function(err, replies){
+				
+				});
 			socket.emit('enter', nick);
 			// Save nickname on socket
 			socket.nickname = nick;
